@@ -1335,6 +1335,17 @@
         opacity: 1;
         transform: translateY(0);
       }
+      /* Prevent stats-bar from covering hero buttons */
+      .hero-content {
+        padding-bottom: 130px; /* desktop reserve for stats bar */
+      }
+
+      /* On small screens stats bar wraps -> needs more space */
+      @media (max-width: 900px) {
+        .hero-content {
+          padding-bottom: 220px;
+        }
+      }
 
       /* RESPONSIVE */
       @media (max-width: 900px) {
