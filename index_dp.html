@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>泰翔保全 · 智慧安防物管領導品牌</title>
+    <!-- 字體 & 圖示庫 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #0a0c15;
+        color: #fff;
+        line-height: 1.5;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* 動態粒子背景 / 科技網點 (保留原氛圍) */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(
+            circle at 30% 40%,
+            rgba(160, 32, 240, 0.08) 0%,
+            transparent 25%
+          ),
+          radial-gradient(
+            circle at 80% 70%,
+            rgba(255, 62, 157, 0.08) 0%,
+            transparent 30%
+          ),
+          linear-gradient(
+            0deg,
+            transparent 24%,
+            rgba(123, 46, 218, 0.03) 25%,
+            rgba(123, 46, 218, 0.03) 26%,
+            transparent 27%,
+            transparent
+          ),
+          linear-gradient(
+            90deg,
+            transparent 24%,
+            rgba(123, 46, 218, 0.03) 25%,
+            rgba(123, 46, 218, 0.03) 26%,
+            transparent 27%,
+            transparent
+          );
+        background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .glow-orb {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle at 30% 30%, #b829e6, #4b27b0);
+        filter: blur(100px);
+        opacity: 0.25;
+        border-radius: 50%;
+        top: -100px;
+        right: -50px;
+        z-index: 0;
+        animation: floatGlow 15s infinite alternate ease-in-out;
+      }
+
+      .glow-orb2 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle at 70% 20%, #ff3e9d, #6d1fbb);
+        filter: blur(130px);
+        opacity: 0.2;
+        bottom: 0;
+        left: -150px;
+        position: fixed;
+        z-index: 0;
+        animation: floatGlow2 20s infinite alternate;
+      }
+
+      @keyframes floatGlow {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 0.25;
+        }
+        100% {
+          transform: translate(100px, 60px) scale(1.3);
+          opacity: 0.35;
+        }
+      }
+      @keyframes floatGlow2 {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 0.2;
+        }
+        100% {
+          transform: translate(-80px, -100px) scale(1.4);
+          opacity: 0.3;
+        }
+      }
+
+      .container {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 30px;
+        position: relative;
+        z-index: 5;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(8px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(10, 12, 21, 0.7);
+        margin-bottom: 20px;
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        background: linear-gradient(135deg, #fff 0%, #e0b0ff 80%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .logo span {
+        font-weight: 300;
+        font-size: 16px;
+        background: none;
+        -webkit-text-fill-color: #a67cff;
+        background-clip: unset;
+        color: #a67cff;
+        margin-left: 8px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 48px;
+        align-items: center;
+      }
+      .nav-links a {
+        color: #eee;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+        transition: 0.2s;
+        position: relative;
+      }
+      .nav-links a:after {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background: linear-gradient(90deg, #c084fc, #ff3e9d);
+        transition: 0.3s;
+      }
+      .nav-links a:hover {
+        color: white;
+      }
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .btn-glow {
+        background: linear-gradient(145deg, #1d1730, #130e22);
+        border: 1px solid rgba(200, 130, 250, 0.5);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 60px;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 0 15px rgba(180, 70, 255, 0.3);
+        backdrop-filter: blur(4px);
+      }
+      .btn-glow:hover {
+        border-color: #ff78b9;
+        box-shadow: 0 0 30px #c154f0, 0 0 10px #ff3e9d inset;
+        background: linear-gradient(145deg, #221b38, #18132b);
+        transform: scale(1.02);
+      }
+
+      /* HERO 區域 */
+      .hero {
+        display: flex;
+        align-items: center;
+        min-height: calc(100vh - 120px);
+        gap: 40px;
+        padding: 40px 0;
+        flex-wrap: wrap;
+      }
+
+      .hero-content {
+        flex: 1 1 450px;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        padding: 6px 14px;
+        background: rgba(170, 80, 255, 0.18);
+        border: 1px solid rgba(190, 110, 255, 0.4);
+        border-radius: 60px;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        margin-bottom: 24px;
+        backdrop-filter: blur(4px);
+        color: #ddb5ff;
+      }
+
+      .hero-content h1 {
+        font-size: clamp(42px, 7vw, 70px);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -1.5px;
+        background: linear-gradient(to right, #ffffff, #e7c6ff, #c792ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 20px;
+      }
+
+      .hero-content p {
+        font-size: 18px;
+        color: #cbcbe0;
+        max-width: 550px;
+        margin-bottom: 40px;
+        border-left: 3px solid #ff3e9d;
+        padding-left: 24px;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #a23eff, #ff3e9d);
+        border: none;
+        color: white;
+        font-weight: 700;
+        padding: 16px 44px;
+        border-radius: 60px;
+        font-size: 16px;
+        box-shadow: 0 12px 30px -8px #a23eff;
+        transition: 0.2s;
+        cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .btn-primary:hover {
+        transform: scale(1.04);
+        box-shadow: 0 18px 40px -4px #ff3ed0;
+      }
+      .btn-outline {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: white;
+        font-weight: 600;
+        padding: 16px 40px;
+        border-radius: 60px;
+        backdrop-filter: blur(8px);
+        transition: 0.2s;
+        cursor: pointer;
+      }
+      .btn-outline:hover {
+        border-color: #ff87c3;
+        background: rgba(255, 62, 157, 0.1);
+        box-shadow: 0 0 20px #ff3e9d55;
+      }
+
+      .hero-visual {
+        flex: 1 1 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+      .shield-ring {
+        position: relative;
+        width: 340px;
+        height: 340px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .ring {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 2px dashed rgba(190, 110, 255, 0.4);
+        animation: spin 20s linear infinite;
+      }
+      .ring2 {
+        width: 85%;
+        height: 85%;
+        border: 2px dotted #ff3e9d;
+        opacity: 0.4;
+        animation: spinReverse 14s linear infinite;
+      }
+      .ring3 {
+        width: 70%;
+        height: 70%;
+        border: 3px solid transparent;
+        border-top: 3px solid #c663ff;
+        border-bottom: 3px solid #ff5ba0;
+        border-radius: 50%;
+        animation: spin 8s linear infinite;
+        box-shadow: 0 0 30px #b23eff;
+      }
+      .shield-icon {
+        font-size: 90px;
+        color: #fff;
+        background: linear-gradient(145deg, #a855f7, #ff3e9d);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 25px #f0f);
+        z-index: 5;
+        animation: pulseGlow 2.2s infinite alternate;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spinReverse {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(-360deg);
+        }
+      }
+      @keyframes pulseGlow {
+        0% {
+          filter: drop-shadow(0 0 15px #c155ff);
+          transform: scale(1);
+        }
+        100% {
+          filter: drop-shadow(0 0 40px #ff60b5);
+          transform: scale(1.05);
+        }
+      }
+
+      /* 合作夥伴橫幅 (保留) */
+      .marquee {
+        margin: 60px 0 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 30px 0;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .marquee-track {
+        display: inline-block;
+        animation: scroll 30s linear infinite;
+      }
+      .marquee-track span {
+        margin: 0 50px;
+        font-size: 22px;
+        font-weight: 500;
+        color: #8f8fbb;
+        letter-spacing: 2px;
+        opacity: 0.7;
+        transition: 0.2s;
+      }
+      .marquee-track span i {
+        color: #c27aff;
+        margin-right: 8px;
+      }
+      .marquee-track span:hover {
+        opacity: 1;
+        color: #fff;
+      }
+      @keyframes scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* 服務項目 重新設計：用緊湊標籤式卡片呈現 */
+      .section-title {
+        text-align: center;
+        margin: 80px 0 50px;
+      }
+      .section-title h2 {
+        font-size: 44px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ffffff, #d9b6ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .section-title p {
+        color: #9d9dcf;
+        font-size: 18px;
+        max-width: 600px;
+        margin: 10px auto 0;
+      }
+
+      .service-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+      .service-tag {
+        background: rgba(20, 15, 40, 0.5);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 130, 200, 0.2);
+        border-radius: 60px;
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transition: all 0.2s;
+        font-weight: 500;
+        font-size: 16px;
+        color: #f0e4ff;
+        box-shadow: 0 8px 20px -10px #000;
+      }
+      .service-tag i {
+        font-size: 24px;
+        background: linear-gradient(45deg, #b56aff, #ff6ebc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        min-width: 32px;
+        text-align: center;
+      }
+      .service-tag:hover {
+        border-color: #ff87c3;
+        transform: translateY(-4px) scale(1.02);
+        background: rgba(40, 25, 60, 0.7);
+        box-shadow: 0 15px 25px -10px #ff3e9d;
+      }
+
+      /* 關於+認證區塊 (兩欄) */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin: 100px 0 60px;
+      }
+      .info-card {
+        background: rgba(15, 10, 30, 0.45);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(200, 130, 250, 0.15);
+        border-radius: 48px;
+        padding: 40px;
+      }
+      .info-card h3 {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 30px;
+        background: linear-gradient(135deg, #fff, #d2a5ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .info-line {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 24px;
+        color: #cfcfee;
+      }
+      .info-line i {
+        font-size: 22px;
+        color: #ff8acd;
+        width: 30px;
+      }
+      .info-line strong {
+        color: white;
+        font-weight: 600;
+        margin-right: 6px;
+      }
+      .badge-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .badge {
+        background: rgba(170, 80, 255, 0.15);
+        border: 1px solid rgba(190, 110, 255, 0.4);
+        border-radius: 40px;
+        padding: 8px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #d2b5ff;
+        backdrop-filter: blur(4px);
+      }
+      .badge-award {
+        background: linear-gradient(145deg, #ffd96620, #ff3e9d20);
+        border: 1px solid #ffb3d9;
+        color: #ffd9b0;
+      }
+
+      /* 數據區塊 用真實數字 */
+      .stats {
+        display: flex;
+        justify-content: space-around;
+        margin: 80px 0;
+        padding: 40px 20px;
+        background: rgba(10, 5, 25, 0.5);
+        border-radius: 120px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+      .stat-item {
+        text-align: center;
+      }
+      .stat-number {
+        font-size: 52px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #e7c0ff, #ff96d0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1;
+      }
+      .stat-label {
+        color: #afafda;
+        letter-spacing: 1px;
+        font-size: 16px;
+      }
+
+      /* 獎項橫幅 (簡潔) */
+      .award-row {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 60px 0;
+        flex-wrap: wrap;
+      }
+      .award-item {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 60px;
+        padding: 12px 30px;
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .award-item i {
+        color: gold;
+        font-size: 28px;
+      }
+
+      /* CTA */
+      .cta-section {
+        background: rgba(15, 10, 35, 0.6);
+        border-radius: 70px;
+        padding: 80px 50px;
+        text-align: center;
+        border: 1px solid rgba(200, 130, 250, 0.2);
+        margin: 80px 0;
+        box-shadow: 0 0 80px #4b1d7522;
+        backdrop-filter: blur(10px);
+      }
+      .cta-section h2 {
+        font-size: 50px;
+        font-weight: 700;
+        max-width: 700px;
+        margin: 0 auto 20px;
+      }
+
+      footer {
+        padding: 40px 0 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.03);
+        color: #8d8dbb;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        font-size: 14px;
+      }
+      .footer-links i {
+        color: #b56aff;
+        margin: 0 10px;
+        font-size: 18px;
+        transition: 0.2s;
+      }
+      .footer-links i:hover {
+        color: #ff8acd;
+      }
+      .footer-extra {
+        width: 100%;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 12px;
+        color: #5f5f92;
+      }
+
+      @media (max-width: 900px) {
+        .service-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .about-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 700px) {
+        .navbar {
+          flex-direction: column;
+          gap: 20px;
+        }
+        .nav-links {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 24px;
+        }
+        .hero {
+          flex-direction: column;
+          text-align: center;
+        }
+        .hero-content p {
+          border-left: none;
+          padding-left: 0;
+        }
+        .hero-buttons {
+          justify-content: center;
+        }
+        .service-grid {
+          grid-template-columns: 1fr;
+        }
+        .stats {
+          border-radius: 40px;
+          gap: 40px;
+        }
+        .cta-section h2 {
+          font-size: 34px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glow-orb"></div>
+    <div class="glow-orb2"></div>
+
+    <div class="container">
+      <!-- 導航列 (不變) -->
+      <nav class="navbar">
+        <div class="logo">泰翔保全 <span>· 卓越二十載</span></div>
+        <div class="nav-links">
+          <a href="#">首頁</a>
+          <a href="#">服務</a>
+          <a href="#">關於</a>
+          <a href="#">聯繫</a>
+          <button class="btn-glow">
+            <i class="fa-regular fa-comment" style="margin-right: 8px"></i
+            >免費諮詢
+          </button>
+        </div>
+      </nav>
+
+      <!-- HERO 主角 (微調badge) -->
+      <section class="hero">
+        <div class="hero-content">
+          <span class="hero-badge"
+            ><i class="fa-regular fa-star" style="margin-right: 8px"></i> 2025
+            幸福企業金獎</span
+          >
+          <h1>安心，從泰翔開始。</h1>
+          <p>
+            民國九十三年創立 · 資本額壹仟萬元 · 年營業額3.46億 · 550位專業夥伴
+          </p>
+          <div class="hero-buttons">
+            <button class="btn-primary">
+              <i class="fa-regular fa-shield" style="margin-right: 8px"></i>
+              取得客製化方案
+            </button>
+            <button class="btn-outline">
+              <i class="fa-regular fa-building" style="margin-right: 8px"></i>
+              總部：中和板南路
+            </button>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="shield-ring">
+            <div class="ring"></div>
+            <div class="ring ring2"></div>
+            <div class="ring ring3"></div>
+            <i class="fa-solid fa-shield-halved shield-icon"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- 合作品牌 保留 (略為縮減) -->
+      <div class="marquee">
+        <div class="marquee-track">
+          <span><i class="fa-solid fa-building"></i> 遠雄建設</span>
+          <span><i class="fa-solid fa-microchip"></i> 日月光</span>
+          <span><i class="fa-solid fa-train"></i> 台北捷運</span>
+          <span><i class="fa-solid fa-hospital"></i> 台大醫院</span>
+          <span><i class="fa-solid fa-university"></i> 中信金控</span>
+          <span><i class="fa-solid fa-flask"></i> 工研院</span>
+          <!-- 重複 -->
+          <span><i class="fa-solid fa-building"></i> 遠雄建設</span>
+          <span><i class="fa-solid fa-microchip"></i> 日月光</span>
+        </div>
+      </div>
+
+      <!-- 服務項目 (客戶完整清單，以標籤形式呈現，不冗長) -->
+      <div class="section-title">
+        <h2>全方位安防 · 物管服務</h2>
+        <p>駐衛警、大樓管理、機電消防、清潔監控 — 一站到位</p>
+      </div>
+      <div class="service-grid">
+        <div class="service-tag">
+          <i class="fa-solid fa-user-shield"></i> 保全駐衛警服務
+        </div>
+        <div class="service-tag">
+          <i class="fa-solid fa-building"></i> 大樓管理社區規劃
+        </div>
+        <div class="service-tag">
+          <i class="fa-solid fa-clipboard-list"></i> 公共設施點交諮詢
+        </div>
+        <div class="service-tag">
+          <i class="fa-solid fa-helmet-safety"></i> 樣品屋及工地警衛
+        </div>
+        <div class="service-tag">
+          <i class="fa-solid fa-industry"></i> 工廠警衛派駐
+        </div>
+        <div class="service-tag">
+          <i class="fa-solid fa-user-tie"></i> 貼身警衛服務
+        </div>
+        <div class="service-tag">
+          <i class="fa-solid fa-camera"></i> 電腦監視防盜系統
+        </div>
+        <div class="service-tag">
+          <i class="fa-solid fa-fire-extinguisher"></i> 消防機電保養
+        </div>
+        <div class="service-tag">
+          <i class="fa-solid fa-spray-can-sparkles"></i> 環境清潔消毒
+        </div>
+      </div>
+
+      <!-- 關於＋認證 兩欄 (精簡呈現所有細節) -->
+      <div class="about-grid">
+        <div class="info-card">
+          <h3>
+            <i class="fa-regular fa-building" style="margin-right: 10px"></i>
+            公司概要
+          </h3>
+          <div class="info-line">
+            <i class="fa-regular fa-calendar"></i>
+            <strong>創立</strong> 民國九十三年 (2004)
+          </div>
+          <div class="info-line">
+            <i class="fa-regular fa-bank"></i> <strong>資本額</strong> 壹仟萬元
+          </div>
+          <div class="info-line">
+            <i class="fa-regular fa-chart-line"></i>
+            <strong>年營業額</strong> 346,000,000 元
+          </div>
+          <div class="info-line">
+            <i class="fa-regular fa-users"></i> <strong>員工人數</strong> 550 人
+          </div>
+          <div class="info-line">
+            <i class="fa-regular fa-location-dot"></i>
+            <strong>總部</strong> 新北市中和區板南路659號10樓
+          </div>
+          <div class="info-line">
+            <i class="fa-regular fa-location-dot"></i>
+            <strong>台北據點</strong> 台北市萬華區萬大路237巷6號1樓
+          </div>
+          <div class="info-line">
+            <i class="fa-regular fa-phone"></i>
+            <strong>電話</strong> 02-2226-1739
+          </div>
+        </div>
+        <div class="info-card">
+          <h3>
+            <i class="fa-regular fa-award" style="margin-right: 10px"></i>
+            認證・會員・榮耀
+          </h3>
+          <div class="badge-group">
+            <span class="badge"
+              ><i class="fa-regular fa-certificate"></i> ISO 9001:2008</span
+            >
+            <span class="badge"
+              ><i class="fa-regular fa-building-columns"></i>
+              北市建商公司(093)字第469480號</span
+            >
+            <span class="badge"
+              ><i class="fa-regular fa-handshake"></i> 保全公會會員</span
+            >
+            <span class="badge"
+              ><i class="fa-regular fa-handshake"></i> 物管同業公會會員</span
+            >
+            <span class="badge"
+              ><i class="fa-regular fa-medal"></i> 績優會員證書</span
+            >
+          </div>
+          <div style="margin: 30px 0 20px">
+            <h4 style="font-size: 20px; margin-bottom: 16px; color: #e2c8ff">
+              🏆 幸福企業獎
+            </h4>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap">
+              <span class="badge badge-award"
+                ><i class="fa-regular fa-star"></i> 2025 金獎</span
+              >
+              <span class="badge badge-award"
+                ><i class="fa-regular fa-star"></i> 2024 銀獎</span
+              >
+              <span class="badge badge-award"
+                ><i class="fa-regular fa-star"></i> 2023 銀獎</span
+              >
+            </div>
+          </div>
+          <div class="info-line" style="margin-top: 25px">
+            <i class="fa-regular fa-file-lines"></i>
+            <strong>營利事業登記證</strong> 北市建商公司(093)字第469480號
+          </div>
+        </div>
+      </div>
+
+      <!-- 數據區塊 (以真實數字重新設計) -->
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-number">3.46億</div>
+          <div class="stat-label">年營業額</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">550+</div>
+          <div class="stat-label">專業員工</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">2004</div>
+          <div class="stat-label">創立至今</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">21年</div>
+          <div class="stat-label">在地服務</div>
+        </div>
+      </div>
+
+      <!-- 簡潔獎項橫幅 (再次強調幸福企業) -->
+      <div class="award-row">
+        <div class="award-item">
+          <i class="fa-solid fa-trophy"></i> 2025 幸福企業金獎
+        </div>
+        <div class="award-item">
+          <i class="fa-solid fa-medal"></i> 2024 銀獎
+        </div>
+        <div class="award-item">
+          <i class="fa-solid fa-medal"></i> 2023 銀獎
+        </div>
+      </div>
+
+      <!-- CTA 保留 -->
+      <div class="cta-section">
+        <h2>安心，從泰翔開始</h2>
+        <p style="color: #c8b3ff; font-size: 18px; margin-bottom: 40px">
+          ISO認證 · 公會會員 · 幸福企業金獎，您最信賴的安防夥伴
+        </p>
+        <button class="btn-primary">
+          <i class="fa-regular fa-calendar-check" style="margin-right: 10px"></i
+          >預約現場演示
+        </button>
+      </div>
+
+      <!-- footer 加入證號資訊 -->
+      <footer>
+        <div>© 2026 泰翔保全股份有限公司 ｜ 24h 服務 02-2226-1739</div>
+        <div class="footer-links">
+          <i class="fa-brands fa-facebook-f"></i>
+          <i class="fa-brands fa-x-twitter"></i>
+          <i class="fa-brands fa-linkedin-in"></i>
+          <i class="fa-brands fa-youtube"></i>
+        </div>
+        <div class="footer-extra">
+          營利事業登記證：北市建商公司(093)字第469480號 |
+          總部：新北市中和區板南路659號10樓
+        </div>
+      </footer>
+    </div>
+
+    <style>
+      .marquee:hover .marquee-track {
+        animation-play-state: paused;
+      }
+      .service-tag {
+        transition: all 0.2s;
+      }
+    </style>
+  </body>
+</html>
