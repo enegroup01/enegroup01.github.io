@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>泰翔保全股份有限公司</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@300;400;600;700;900&family=Noto+Sans+TC:wght@300;400;900&family=DM+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        /* Light Base (改成淺底) */
+        --black: #f4f2ee; /* 主背景色（原本是超黑） */
+        --charcoal: #ece9e4; /* 區塊背景 */
+        --iron: #e3dfd9; /* 卡片背景 */
+        --steel: #d6d1ca; /* hover / 分層背景 */
+
+        /* Chic Security Green (主色：沉穩有安全感) */
+        --red: #2f5d50; /* 主強調色 */
+        --red-hot: #3f7a69; /* hover */
+        --rust: #23433b; /* 深階強調 */
+        --orange: #8fa89b; /* 柔和輔助 */
+
+        /* Text Colors（改成深色字） */
+        --white: #1a1a1a; /* 主要文字（原本是白色） */
+        --grey: #6b6b6b;
+        --grey-dim: #b8b2aa;
+
+        /* Border */
+        --border: rgba(47, 93, 80, 0.25);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--black);
+        color: var(--white);
+        font-family: "Barlow Condensed", sans-serif;
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      /* CURSOR */
+      #cur {
+        position: fixed;
+        width: 12px;
+        height: 12px;
+        background: var(--red);
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width 0.15s, height 0.15s, background 0.15s;
+        mix-blend-mode: difference;
+      }
+
+      /* NOISE OVERLAY */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1000;
+      }
+
+      /* SCAN LINES */
+      body::after {
+        display: none;
+      }
+
+      /* ═══════════════════════════════
+   NAV
+═══════════════════════════════ */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 800;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 40px;
+        background: rgba(10, 10, 10, 0.96);
+        border-bottom: 2px solid var(--red);
+      }
+
+      .logo-mark {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        text-decoration: none;
+      }
+
+      .logo-bracket {
+        font-family: "Anton", sans-serif;
+        font-size: 28px;
+        color: var(--red);
+        letter-spacing: -2px;
+        line-height: 1;
+      }
+
+      .logo-text {
+        font-family: "Anton", sans-serif;
+        font-size: 18px;
+        letter-spacing: 3px;
+        color: var(--white);
+        padding: 0 8px;
+        text-transform: uppercase;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 36px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: var(--grey);
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+
+      .nav-links a:hover {
+        color: var(--red-hot);
+      }
+
+      .nav-emergency {
+        font-family: "Anton", sans-serif;
+        font-size: 14px;
+        letter-spacing: 3px;
+        color: var(--black);
+        background: var(--red);
+        padding: 10px 20px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        transition: background 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .nav-emergency:hover {
+        background: var(--red-hot);
+      }
+
+      /* ═══════════════════════════════
+   HERO — FULL BRUTALIST
+═══════════════════════════════ */
+      .hero {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: 1fr auto;
+        padding-top: 64px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* diagonal red slash */
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -200px;
+        right: -200px;
+        width: 700px;
+        height: 700px;
+        background: var(--red);
+        transform: rotate(35deg);
+        opacity: 0.04;
+        pointer-events: none;
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        align-items: end;
+        padding: 80px 40px 0;
+        gap: 0;
+      }
+
+      .hero-left {
+        padding-bottom: 60px;
+      }
+
+      .hero-eyebrow {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 5px;
+        color: var(--red);
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        animation: fadeUp 0.7s ease both;
+      }
+
+      .hero-eyebrow::before {
+        content: "";
+        display: block;
+        width: 32px;
+        height: 2px;
+        background: var(--red);
+      }
+
+      /* MASSIVE HEADLINE */
+      .hero-h1 {
+        font-family: "Anton", sans-serif;
+        font-size: clamp(96px, 13vw, 200px);
+        line-height: 0.85;
+        letter-spacing: -2px;
+        color: var(--white);
+        text-transform: uppercase;
+        animation: fadeUp 0.7s ease 0.1s both;
+        position: relative;
+      }
+
+      .hero-h1 .line-red {
+        color: var(--red);
+        display: block;
+        -webkit-text-stroke: 0px;
+      }
+
+      .hero-h1 .line-outline {
+        -webkit-text-stroke: 2px var(--white);
+        color: transparent;
+        display: block;
+      }
+
+      .hero-sub {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 16px;
+        font-weight: 300;
+        letter-spacing: 1px;
+        color: var(--grey);
+        margin-top: 36px;
+        max-width: 520px;
+        line-height: 1.9;
+        border-left: 3px solid var(--red);
+        padding-left: 20px;
+        animation: fadeUp 0.7s ease 0.2s both;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 16px;
+        margin-top: 48px;
+        animation: fadeUp 0.7s ease 0.3s both;
+      }
+
+      .btn-main {
+        font-family: "Anton", sans-serif;
+        font-size: 16px;
+        letter-spacing: 4px;
+        color: var(--black);
+        background: var(--red);
+        border: none;
+        padding: 18px 42px;
+        cursor: none;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: background 0.2s, transform 0.1s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-main::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.15);
+        transition: left 0.35s ease;
+      }
+
+      .btn-main:hover {
+        background: var(--red-hot);
+      }
+      .btn-main:hover::before {
+        left: 100%;
+      }
+
+      .btn-ghost {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 3px;
+        color: var(--grey);
+        background: transparent;
+        border: 1px solid var(--grey-dim);
+        padding: 18px 42px;
+        cursor: none;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: color 0.2s, border-color 0.2s;
+      }
+
+      .btn-ghost:hover {
+        color: var(--white);
+        border-color: var(--white);
+      }
+
+      /* HERO RIGHT — STAT TOWER */
+      .hero-right {
+        border-left: 2px solid var(--red);
+        padding: 80px 0 60px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 0;
+      }
+
+      .stat-tower-item {
+        padding: 28px 0;
+        border-bottom: 1px solid var(--grey-dim);
+        animation: fadeUp 0.7s ease both;
+      }
+
+      .stat-tower-item:first-child {
+        border-top: 1px solid var(--grey-dim);
+      }
+
+      .stat-tower-num {
+        font-family: "Anton", sans-serif;
+        font-size: 54px;
+        color: var(--white);
+        line-height: 1;
+        letter-spacing: 1px;
+      }
+
+      .stat-tower-num span {
+        color: var(--red);
+      }
+
+      .stat-tower-label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: var(--grey);
+        text-transform: uppercase;
+        margin-top: 6px;
+      }
+
+      /* HERO BOTTOM — RED MARQUEE */
+      .hero-marquee {
+        background: var(--red);
+        padding: 18px 0;
+        overflow: hidden;
+        border-top: 3px solid var(--rust);
+      }
+
+      .marquee-track {
+        display: flex;
+        animation: marquee 18s linear infinite;
+        white-space: nowrap;
+      }
+
+      .marquee-item {
+        font-family: "Anton", sans-serif;
+        font-size: 15px;
+        letter-spacing: 6px;
+        color: var(--black);
+        padding: 0 50px;
+        text-transform: uppercase;
+        opacity: 0.9;
+      }
+
+      .marquee-item::after {
+        content: "//";
+        margin-left: 50px;
+        opacity: 0.5;
+      }
+
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* ═══════════════════════════════
+   SERVICES — NUMBERED LIST, BRUTAL
+═══════════════════════════════ */
+      .services {
+        padding: 120px 40px;
+        background: var(--charcoal);
+        position: relative;
+      }
+
+      .services-top {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: end;
+        margin-bottom: 80px;
+        border-bottom: 2px solid var(--grey-dim);
+        padding-bottom: 60px;
+      }
+
+      .sec-eyebrow {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 5px;
+        color: var(--red);
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .sec-eyebrow::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: var(--red);
+      }
+
+      .sec-h2 {
+        font-family: "Anton", sans-serif;
+        font-size: clamp(52px, 6vw, 96px);
+        letter-spacing: -1px;
+        line-height: 0.9;
+        text-transform: uppercase;
+        color: var(--white);
+      }
+
+      .sec-h2 em {
+        color: var(--red);
+        font-style: normal;
+      }
+
+      .services-desc {
+        font-size: 15px;
+        font-weight: 300;
+        line-height: 2;
+        color: var(--grey);
+        align-self: end;
+      }
+
+      /* SERVICE LIST — big numbered rows */
+      .svc-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .svc-row {
+        display: grid;
+        grid-template-columns: 100px 1fr auto;
+        align-items: center;
+        gap: 40px;
+        padding: 36px 0;
+        border-bottom: 1px solid var(--grey-dim);
+        cursor: none;
+        transition: background 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .svc-row::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 0;
+        background: var(--red);
+        opacity: 0.06;
+        transition: width 0.4s ease;
+      }
+
+      .svc-row:hover::before {
+        width: 100%;
+      }
+      .svc-row:first-child {
+        border-top: 1px solid var(--grey-dim);
+      }
+
+      .svc-num {
+        font-family: "Anton", sans-serif;
+        font-size: 48px;
+        color: var(--grey-dim);
+        line-height: 1;
+        transition: color 0.3s;
+      }
+
+      .svc-row:hover .svc-num {
+        color: var(--red);
+      }
+
+      .svc-info {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .svc-name {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: var(--white);
+        text-transform: uppercase;
+        transition: color 0.3s;
+      }
+
+      .svc-row:hover .svc-name {
+        color: var(--white);
+      }
+
+      .svc-desc {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+        color: var(--grey);
+        letter-spacing: 0.5px;
+        line-height: 1.6;
+      }
+
+      .svc-arrow {
+        font-size: 24px;
+        color: var(--grey-dim);
+        transition: color 0.3s, transform 0.3s;
+        font-family: "Anton", sans-serif;
+      }
+
+      .svc-row:hover .svc-arrow {
+        color: var(--red);
+        transform: translateX(6px);
+      }
+
+      /* ═══════════════════════════════
+   ABOUT — SPLIT ASYMMETRIC
+═══════════════════════════════ */
+      .about {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 80vh;
+        position: relative;
+      }
+
+      .about-left {
+        background: var(--iron);
+        padding: 100px 60px 100px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-right: 3px solid var(--red);
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* BIG BACKGROUND NUMBER */
+      .about-left::before {
+        content: "20";
+        font-family: "Anton", sans-serif;
+        font-size: 380px;
+        color: rgba(47, 93, 80, 0.06);
+        position: absolute;
+        bottom: -60px;
+        right: -20px;
+        line-height: 1;
+        pointer-events: none;
+      }
+
+      .about-right {
+        background: var(--charcoal);
+        padding: 100px 40px 100px 60px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .fact-block {
+        padding: 36px 0;
+        border-bottom: 1px solid var(--grey-dim);
+      }
+
+      .fact-block:first-child {
+        border-top: 1px solid var(--grey-dim);
+      }
+
+      .fact-label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 4px;
+        color: var(--red);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .fact-val {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--white);
+        letter-spacing: 0.5px;
+        line-height: 1.5;
+      }
+
+      /* ═══════════════════════════════
+   AWARDS — DIAGONAL LAYOUT
+═══════════════════════════════ */
+      .awards {
+        background: var(--black);
+        padding: 120px 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Large background text */
+      .awards::before {
+        content: "AWARD";
+        font-family: "Anton", sans-serif;
+        font-size: 280px;
+        color: rgba(255, 255, 255, 0.015);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+        pointer-events: none;
+        letter-spacing: -5px;
+      }
+
+      .awards-header {
+        margin-bottom: 80px;
+      }
+
+      .awards-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3px;
+        background: var(--grey-dim);
+        border: 3px solid var(--grey-dim);
+        margin-bottom: 60px;
+      }
+
+      .award-card {
+        background: var(--iron);
+        padding: 60px 40px;
+        position: relative;
+        overflow: hidden;
+        cursor: none;
+        transition: background 0.3s;
+      }
+
+      .award-card:hover {
+        background: var(--steel);
+      }
+
+      .award-card.gold::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--red);
+      }
+
+      .award-card.silver::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--grey);
+      }
+
+      .award-year-big {
+        font-family: "Anton", sans-serif;
+        font-size: 80px;
+        color: var(--white);
+        line-height: 1;
+        letter-spacing: -2px;
+      }
+
+      .award-sub-label {
+        font-family: "DM Mono", monospace;
+        font-size: 9px;
+        letter-spacing: 4px;
+        color: var(--grey);
+        text-transform: uppercase;
+        margin: 12px 0 24px;
+      }
+
+      .award-tier {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+        border: 1px solid;
+      }
+
+      .award-tier.gold-tier {
+        border-color: var(--red);
+        color: var(--red);
+      }
+      .award-tier.silver-tier {
+        border-color: var(--grey);
+        color: var(--grey);
+      }
+
+      .award-tier-text {
+        font-family: "Anton", sans-serif;
+        font-size: 18px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+      }
+
+      .award-note {
+        margin-top: 24px;
+        font-size: 13px;
+        font-weight: 300;
+        color: var(--grey);
+        line-height: 1.7;
+      }
+
+      /* CERT ROW */
+      .cert-row {
+        display: flex;
+        gap: 3px;
+        background: var(--grey-dim);
+        border: 3px solid var(--grey-dim);
+      }
+
+      .cert-item {
+        flex: 1;
+        background: var(--iron);
+        padding: 28px 32px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        cursor: none;
+        transition: background 0.3s;
+      }
+
+      .cert-item:hover {
+        background: var(--steel);
+      }
+
+      .cert-icon {
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--red);
+        flex-shrink: 0;
+      }
+
+      .cert-label {
+        font-family: "DM Mono", monospace;
+        font-size: 9px;
+        letter-spacing: 3px;
+        color: var(--grey);
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .cert-val {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--white);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      /* ═══════════════════════════════
+   CONTACT — FULL BLEED RED
+═══════════════════════════════ */
+      .contact {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 80vh;
+      }
+
+      .contact-left {
+        background: var(--red);
+        padding: 100px 60px 100px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* big diagonal */
+      .contact-left::before {
+        content: "";
+        position: absolute;
+        bottom: -150px;
+        right: -150px;
+        width: 500px;
+        height: 500px;
+        background: var(--iron);
+        transform: rotate(20deg);
+        opacity: 0.3;
+        pointer-events: none;
+      }
+
+      .contact-left .sec-eyebrow {
+        color: rgba(0, 0, 0, 0.6);
+      }
+      .contact-left .sec-eyebrow::before {
+        background: rgba(0, 0, 0, 0.6);
+      }
+
+      .contact-h2 {
+        font-family: "Anton", sans-serif;
+        font-size: clamp(52px, 6vw, 88px);
+        color: var(--black);
+        line-height: 0.9;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+        margin-bottom: 36px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .contact-details {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .contact-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+      }
+
+      .contact-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .contact-dot {
+        width: 10px;
+        height: 10px;
+        background: var(--black);
+        flex-shrink: 0;
+      }
+
+      .contact-info-label {
+        font-family: "DM Mono", monospace;
+        font-size: 9px;
+        letter-spacing: 3px;
+        color: rgba(0, 0, 0, 0.5);
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .contact-info-val {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--black);
+        letter-spacing: 0.5px;
+      }
+
+      /* FORM SIDE */
+      .contact-right {
+        background: var(--iron);
+        padding: 100px 40px 100px 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .form-header {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 5px;
+        color: var(--red);
+        text-transform: uppercase;
+        margin-bottom: 40px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .form-header::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: var(--red);
+      }
+
+      .form-group {
+        margin-bottom: 24px;
+      }
+
+      .form-label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: var(--grey);
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .form-input,
+      .form-textarea {
+        width: 100%;
+        background: var(--black);
+        border: none;
+        border-bottom: 2px solid var(--grey-dim);
+        color: var(--white);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 17px;
+        font-weight: 400;
+        padding: 12px 0;
+        outline: none;
+        transition: border-color 0.3s;
+        cursor: none;
+      }
+
+      .form-input:focus,
+      .form-textarea:focus {
+        border-bottom-color: var(--red);
+      }
+      .form-textarea {
+        height: 100px;
+        resize: none;
+      }
+
+      .form-submit {
+        width: 100%;
+        font-family: "Anton", sans-serif;
+        font-size: 22px;
+        letter-spacing: 6px;
+        color: var(--black);
+        background: var(--red);
+        border: none;
+        padding: 20px;
+        cursor: none;
+        text-transform: uppercase;
+        margin-top: 16px;
+        transition: background 0.2s, transform 0.1s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .form-submit:hover {
+        background: var(--red-hot);
+        transform: scale(1.01);
+      }
+
+      /* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+      footer {
+        background: var(--black);
+        border-top: 3px solid var(--red);
+        padding: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .footer-logo {
+        font-family: "Anton", sans-serif;
+        font-size: 20px;
+        letter-spacing: 3px;
+        color: var(--white);
+        text-transform: uppercase;
+      }
+
+      .footer-logo span {
+        color: var(--red);
+      }
+
+      .footer-copy {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: var(--grey);
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 28px;
+        list-style: none;
+      }
+
+      .footer-links a {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: var(--grey);
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+
+      .footer-links a:hover {
+        color: var(--red);
+      }
+
+      /* ═══════════════════════════════
+   STATUS PILL
+═══════════════════════════════ */
+      .status-pill {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 400;
+        background: var(--iron);
+        border: 1px solid var(--grey-dim);
+        border-left: 3px solid var(--red);
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        animation: pillIn 0.6s ease 2s both;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--red);
+        border-radius: 50%;
+        animation: pulseDot 1.5s ease infinite;
+      }
+
+      @keyframes pulseDot {
+        0%,
+        100% {
+          opacity: 1;
+          box-shadow: 0 0 0 0 rgba(204, 31, 31, 0.7);
+        }
+        50% {
+          opacity: 0.8;
+          box-shadow: 0 0 0 6px rgba(204, 31, 31, 0);
+        }
+      }
+
+      .status-text {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: var(--grey);
+        text-transform: uppercase;
+      }
+
+      @keyframes pillIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* GLITCH EFFECT for hero title */
+      @keyframes glitch-1 {
+        0%,
+        94%,
+        100% {
+          clip-path: none;
+          transform: none;
+        }
+        95% {
+          clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+          transform: translate(-3px, 0);
+        }
+        97% {
+          clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+          transform: translate(3px, 0);
+        }
+      }
+
+      .hero-h1 {
+        animation: fadeUp 0.7s ease 0.1s both, glitch-1 8s ease infinite 3s;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 900px) {
+        nav {
+          padding: 0 20px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .hero-inner {
+          grid-template-columns: 1fr;
+          padding: 40px 20px 0;
+        }
+        .hero-right {
+          display: none;
+        }
+        .services {
+          padding: 80px 20px;
+        }
+        .services-top {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+        .svc-row {
+          grid-template-columns: 60px 1fr 30px;
+          gap: 20px;
+        }
+        .about {
+          grid-template-columns: 1fr;
+        }
+        .about-left::before {
+          font-size: 180px;
+        }
+        .awards {
+          padding: 80px 20px;
+        }
+        .awards-grid {
+          grid-template-columns: 1fr;
+        }
+        .cert-row {
+          flex-direction: column;
+        }
+        .contact {
+          grid-template-columns: 1fr;
+        }
+        footer {
+          padding: 24px 20px;
+          flex-direction: column;
+          gap: 16px;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cur"></div>
+
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      <div class="status-text">LIVE · 24/7 ON GUARD</div>
+    </div>
+
+    <!-- NAV -->
+    <nav>
+      <a href="#" class="logo-mark">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">泰翔保全</span>
+        <span class="logo-bracket">]</span>
+      </a>
+      <div class="nav-right">
+        <ul class="nav-links">
+          <li><a href="#services">服務</a></li>
+          <li><a href="#about">關於</a></li>
+          <li><a href="#awards">認證</a></li>
+          <li><a href="#contact">聯絡</a></li>
+        </ul>
+        <a href="#contact" class="nav-emergency">立即諮詢</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <div class="hero-eyebrow">泰翔保全股份有限公司 · EST. 2004</div>
+          <h1 class="hero-h1">
+            守護<span class="line-red">安全</span
+            ><span class="line-outline">邊界</span>
+          </h1>
+          <p class="hero-sub">
+            成立逾二十年，550位專業人員，年營業額三億四千六百萬元。
+            我們不妥協，我們不退讓——為您的企業、社區、資產建立最堅實的防線。
+          </p>
+          <div class="hero-actions">
+            <a href="#contact" class="btn-main">免費安全評估</a>
+            <a href="#services" class="btn-ghost">查看服務</a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="stat-tower-item" style="animation-delay: 0.4s">
+            <div class="stat-tower-num">93<span>年</span></div>
+            <div class="stat-tower-label">民國成立年份</div>
+          </div>
+          <div class="stat-tower-item" style="animation-delay: 0.55s">
+            <div class="stat-tower-num">550</div>
+            <div class="stat-tower-label">專業員工人數</div>
+          </div>
+          <div class="stat-tower-item" style="animation-delay: 0.7s">
+            <div class="stat-tower-num">3.46<span>億</span></div>
+            <div class="stat-tower-label">年度總營業額</div>
+          </div>
+          <div class="stat-tower-item" style="animation-delay: 0.85s">
+            <div class="stat-tower-num">24<span>/7</span></div>
+            <div class="stat-tower-label">全天候警戒</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-marquee">
+        <div class="marquee-track">
+          <div class="marquee-item">保全駐衛警服務</div>
+          <div class="marquee-item">大樓管理社區規劃</div>
+          <div class="marquee-item">工地警衛派駐</div>
+          <div class="marquee-item">工廠警衛派駐</div>
+          <div class="marquee-item">貼身警衛服務</div>
+          <div class="marquee-item">電腦監視防盜系統</div>
+          <div class="marquee-item">消防機電保養</div>
+          <div class="marquee-item">環境清潔消毒</div>
+          <div class="marquee-item">保全駐衛警服務</div>
+          <div class="marquee-item">大樓管理社區規劃</div>
+          <div class="marquee-item">工地警衛派駐</div>
+          <div class="marquee-item">工廠警衛派駐</div>
+          <div class="marquee-item">貼身警衛服務</div>
+          <div class="marquee-item">電腦監視防盜系統</div>
+          <div class="marquee-item">消防機電保養</div>
+          <div class="marquee-item">環境清潔消毒</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="services" id="services">
+      <div class="services-top">
+        <div>
+          <div class="sec-eyebrow">服務項目</div>
+          <h2 class="sec-h2">我們的<em>專業</em><br />服務</h2>
+        </div>
+        <p class="services-desc">
+          從人員駐衛到系統整合，涵蓋企業、社區、工地、活動各類需求，
+          每一項服務都以最高標準執行，零容忍任何安全漏洞。
+        </p>
+      </div>
+
+      <div class="svc-list">
+        <div class="svc-row">
+          <div class="svc-num">01</div>
+          <div class="svc-info">
+            <div class="svc-name">保全駐衛警服務</div>
+            <div class="svc-desc">
+              精選保全人員，門禁管制、巡邏警衛、訪客管理，全面守護您的安全環境。
+            </div>
+          </div>
+          <div class="svc-arrow">→</div>
+        </div>
+        <div class="svc-row">
+          <div class="svc-num">02</div>
+          <div class="svc-info">
+            <div class="svc-name">大樓管理社區規劃</div>
+            <div class="svc-desc">
+              提供社區大樓整合管理服務，公共設施點交諮詢，確保住戶安心生活環境。
+            </div>
+          </div>
+          <div class="svc-arrow">→</div>
+        </div>
+        <div class="svc-row">
+          <div class="svc-num">03</div>
+          <div class="svc-info">
+            <div class="svc-name">樣品屋及工地警衛派駐</div>
+            <div class="svc-desc">
+              專業派駐工地與樣品屋警衛，維護施工安全、防止竊盜，保障工程資產。
+            </div>
+          </div>
+          <div class="svc-arrow">→</div>
+        </div>
+        <div class="svc-row">
+          <div class="svc-num">04</div>
+          <div class="svc-info">
+            <div class="svc-name">工廠警衛派駐</div>
+            <div class="svc-desc">
+              針對製造業廠區特性量身規劃，廠區門禁、物料管制及夜間巡邏任務。
+            </div>
+          </div>
+          <div class="svc-arrow">→</div>
+        </div>
+        <div class="svc-row">
+          <div class="svc-num">05</div>
+          <div class="svc-info">
+            <div class="svc-name">貼身警衛服務</div>
+            <div class="svc-desc">
+              受過嚴格訓練的專業隨扈，為企業高層、政商名流提供全天候貼身護衛。
+            </div>
+          </div>
+          <div class="svc-arrow">→</div>
+        </div>
+        <div class="svc-row">
+          <div class="svc-num">06</div>
+          <div class="svc-info">
+            <div class="svc-name">電腦監視防盜系統安裝</div>
+            <div class="svc-desc">
+              整合型電腦監視防盜系統工程，結合消防機電保養與環境清潔消毒服務。
+            </div>
+          </div>
+          <div class="svc-arrow">→</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <div class="about-left">
+        <div class="sec-eyebrow">關於泰翔</div>
+        <h2 class="sec-h2" style="margin-bottom: 40px">
+          二十年<br /><em>守護</em><br />實力
+        </h2>
+        <p
+          style="
+            font-size: 15px;
+            font-weight: 300;
+            color: var(--grey);
+            line-height: 1.9;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+          "
+        >
+          自民國九十三年創立，泰翔保全股份有限公司深耕保全產業逾二十年。
+          我們以嚴謹的企業文化、專業的人才培訓、持續的技術升級，
+          成為大台北地區最值得信賴的保全合作夥伴。
+        </p>
+      </div>
+
+      <div class="about-right">
+        <div class="fact-block">
+          <div class="fact-label">成立年份</div>
+          <div class="fact-val">民國九十三年（2004年）</div>
+        </div>
+        <div class="fact-block">
+          <div class="fact-label">總資本額</div>
+          <div class="fact-val">壹仟萬元整</div>
+        </div>
+        <div class="fact-block">
+          <div class="fact-label">年度總營業額</div>
+          <div class="fact-val">346,000,000 元</div>
+        </div>
+        <div class="fact-block">
+          <div class="fact-label">員工人數</div>
+          <div class="fact-val">550 位專業員工</div>
+        </div>
+        <div class="fact-block">
+          <div class="fact-label">登記字號</div>
+          <div class="fact-val">北市建商公司(093)字第469480號</div>
+        </div>
+        <div class="fact-block">
+          <div class="fact-label">總部地址</div>
+          <div class="fact-val">台北市萬華區萬大路237巷6號1樓</div>
+        </div>
+        <div class="fact-block">
+          <div class="fact-label">營業據點</div>
+          <div class="fact-val">新北市中和區板南路659號10樓</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AWARDS -->
+    <section class="awards" id="awards">
+      <div class="awards-header">
+        <div class="sec-eyebrow">榮譽認證</div>
+        <h2 class="sec-h2">實力<em>獲得</em><br />肯定</h2>
+      </div>
+
+      <div class="awards-grid">
+        <div class="award-card gold">
+          <div class="award-year-big">2025</div>
+          <div class="award-sub-label">HAPPY ENTERPRISE AWARD</div>
+          <div class="award-tier gold-tier">
+            <span>🏆</span>
+            <span class="award-tier-text">金獎</span>
+          </div>
+          <p class="award-note">幸福企業大獎<br />最高榮譽肯定</p>
+        </div>
+        <div class="award-card silver">
+          <div class="award-year-big">2024</div>
+          <div class="award-sub-label">HAPPY ENTERPRISE AWARD</div>
+          <div class="award-tier silver-tier">
+            <span>🥈</span>
+            <span class="award-tier-text">銀獎</span>
+          </div>
+          <p class="award-note">幸福企業大獎<br />連續獲獎肯定</p>
+        </div>
+        <div class="award-card silver">
+          <div class="award-year-big">2023</div>
+          <div class="award-sub-label">HAPPY ENTERPRISE AWARD</div>
+          <div class="award-tier silver-tier">
+            <span>🥈</span>
+            <span class="award-tier-text">銀獎</span>
+          </div>
+          <p class="award-note">幸福企業大獎<br />三年連續殊榮</p>
+        </div>
+      </div>
+
+      <div class="cert-row">
+        <div class="cert-item">
+          <div class="cert-icon">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <circle cx="12" cy="8" r="6" />
+              <path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12" />
+            </svg>
+          </div>
+          <div>
+            <div class="cert-label">國際認證</div>
+            <div class="cert-val">ISO 9001-2008</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path
+                d="M12 2L4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6L12 2z"
+              />
+              <polyline points="9,12 11,14 15,10" />
+            </svg>
+          </div>
+          <div>
+            <div class="cert-label">公會認證</div>
+            <div class="cert-val">保全 & 物管同業公會會員</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <polyline points="9,12 11,14 15,10" />
+            </svg>
+          </div>
+          <div>
+            <div class="cert-label">殊榮認可</div>
+            <div class="cert-val">績優會員證書</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="contact-left">
+        <div class="sec-eyebrow" style="color: rgba(0, 0, 0, 0.5)">
+          <span
+            style="
+              display: block;
+              width: 20px;
+              height: 2px;
+              background: rgba(0, 0, 0, 0.5);
+            "
+          ></span>
+          聯絡我們
+        </div>
+        <h2 class="contact-h2">開始<br />守護<br />行動</h2>
+
+        <div class="contact-details">
+          <div class="contact-row">
+            <div class="contact-dot"></div>
+            <div>
+              <div class="contact-info-label">電話</div>
+              <div class="contact-info-val">02-2226-1739</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-dot"></div>
+            <div>
+              <div class="contact-info-label">營業據點</div>
+              <div class="contact-info-val">新北市中和區板南路659號10樓</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-dot"></div>
+            <div>
+              <div class="contact-info-label">總部地址</div>
+              <div class="contact-info-val">台北市萬華區萬大路237巷6號1樓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-right">
+        <div class="form-header">傳送諮詢</div>
+        <div class="form-group">
+          <label class="form-label">姓名</label>
+          <input type="text" class="form-input" placeholder="王小明" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">電話</label>
+          <input type="text" class="form-input" placeholder="0912-345-678" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">電子郵件</label>
+          <input
+            type="email"
+            class="form-input"
+            placeholder="name@company.com"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label">需求說明</label>
+          <textarea
+            class="form-textarea"
+            placeholder="描述您的保全需求..."
+          ></textarea>
+        </div>
+        <button class="form-submit">立即送出 →</button>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-logo">泰翔<span>保全</span>股份有限公司</div>
+      <div class="footer-copy">© 2025 TAISIANG SECURITY CO., LTD.</div>
+      <ul class="footer-links">
+        <li><a href="#">隱私政策</a></li>
+        <li><a href="#">服務條款</a></li>
+        <li><a href="#contact">聯絡我們</a></li>
+      </ul>
+    </footer>
+
+    <script>
+      // Custom cursor
+      const cur = document.getElementById("cur");
+      document.addEventListener("mousemove", (e) => {
+        cur.style.left = e.clientX + "px";
+        cur.style.top = e.clientY + "px";
+      });
+      document
+        .querySelectorAll("a, button, .svc-row, .award-card, .cert-item")
+        .forEach((el) => {
+          el.addEventListener("mouseenter", () => {
+            cur.style.width = "40px";
+            cur.style.height = "40px";
+            cur.style.background = "var(--red-hot)";
+          });
+          el.addEventListener("mouseleave", () => {
+            cur.style.width = "12px";
+            cur.style.height = "12px";
+            cur.style.background = "var(--red)";
+          });
+        });
+
+      // Scroll reveal
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.style.opacity = "1";
+              e.target.style.transform = "translateY(0)";
+              obs.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.08 }
+      );
+
+      document
+        .querySelectorAll(
+          ".svc-row, .fact-block, .award-card, .cert-item, .contact-row"
+        )
+        .forEach((el, i) => {
+          el.style.opacity = "0";
+          el.style.transform = "translateY(30px)";
+          el.style.transition = `opacity 0.5s ease ${
+            i * 0.07
+          }s, transform 0.5s ease ${i * 0.07}s`;
+          obs.observe(el);
+        });
+    </script>
+  </body>
+</html>
