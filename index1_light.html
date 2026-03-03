@@ -25,6 +25,12 @@
         --border: rgba(15, 39, 68, 0.15);
         --border-strong: rgba(15, 39, 68, 0.25);
         --shadow: rgba(15, 39, 68, 0.08);
+
+        /* image helpers (new) */
+        --img-shadow: rgba(15, 39, 68, 0.18);
+        --img-overlay: rgba(15, 39, 68, 0.18);
+        --img-overlay-strong: rgba(15, 39, 68, 0.26);
+        --img-warm: rgba(184, 52, 27, 0.12);
       }
 
       *,
@@ -206,6 +212,59 @@
           var(--cream);
       }
 
+      /* HERO PHOTO (NEW - like your dark version, but tuned for light theme) */
+      .hero-photo-wrap {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .hero-photo-glow {
+        position: absolute;
+        right: 1%;
+        top: 50%;
+        transform: translateY(-50%);
+        width: min(52vw, 760px);
+        height: min(62vh, 560px);
+        background: radial-gradient(
+          ellipse at center,
+          rgba(15, 39, 68, 0.14),
+          transparent 62%
+        );
+        filter: blur(2px);
+        opacity: 1;
+      }
+
+      .hero-photo {
+        position: absolute;
+        right: -4%;
+        top: 50%;
+        transform: translateY(-50%);
+        width: min(58vw, 860px);
+        height: min(70vh, 620px);
+        object-fit: cover;
+
+        /* readable but not overpowering */
+        opacity: 0.35;
+        filter: saturate(1.05) contrast(1.12) brightness(1.06);
+
+        /* keeps your vignette feel */
+        mask-image: radial-gradient(
+          ellipse 55% 60% at 55% 50%,
+          black 48%,
+          transparent 74%
+        );
+        -webkit-mask-image: radial-gradient(
+          ellipse 55% 60% at 55% 50%,
+          black 48%,
+          transparent 74%
+        );
+
+        /* subtle lift off background */
+        box-shadow: 0 20px 60px var(--img-shadow);
+      }
+
       /* RADAR */
       .radar-container {
         position: absolute;
@@ -214,6 +273,7 @@
         transform: translateY(-50%);
         width: 480px;
         height: 480px;
+        z-index: 2; /* stays above photo */
       }
 
       .radar-svg {
@@ -273,8 +333,9 @@
 
       .hero-content {
         position: relative;
-        z-index: 2;
+        z-index: 3; /* above photo and radar */
         max-width: 680px;
+        padding-bottom: 130px; /* keep stats bar from covering buttons */
       }
 
       .hero-tag {
@@ -403,6 +464,7 @@
         backdrop-filter: blur(10px);
         display: flex;
         box-shadow: 0 -1px 20px var(--shadow);
+        z-index: 4;
       }
 
       .stat-item {
@@ -555,6 +617,48 @@
         overflow: hidden;
         transition: background 0.4s, box-shadow 0.4s;
         cursor: crosshair;
+        isolation: isolate; /* ensures overlays stay inside */
+      }
+
+      /* SERVICE CARD PHOTO (NEW) */
+      .service-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--card-img);
+        background-size: cover;
+        background-position: center;
+        opacity: 0.18;
+        transform: scale(1.05);
+        filter: saturate(1.05) contrast(1.12) brightness(1.06);
+        pointer-events: none;
+        z-index: 0;
+
+        /* soft fade so text stays readable */
+        mask-image: radial-gradient(
+          ellipse 90% 80% at 75% 25%,
+          black 40%,
+          transparent 78%
+        );
+        -webkit-mask-image: radial-gradient(
+          ellipse 90% 80% at 75% 25%,
+          black 40%,
+          transparent 78%
+        );
+      }
+
+      /* gentle overlay layer for legibility (NEW) */
+      .service-card .img-tint {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(250, 248, 244, 0.65),
+          rgba(250, 248, 244, 0.25)
+        );
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.55;
       }
 
       .service-card::before {
@@ -566,6 +670,7 @@
         height: 0;
         background: var(--navy);
         transition: height 0.5s ease;
+        z-index: 2;
       }
 
       .service-card:hover {
@@ -574,6 +679,13 @@
       }
       .service-card:hover::before {
         height: 100%;
+      }
+      .service-card:hover::after {
+        opacity: 0.24;
+        filter: saturate(1.1) contrast(1.16) brightness(1.08);
+      }
+      .service-card:hover .img-tint {
+        opacity: 0.45;
       }
 
       .service-num {
@@ -585,6 +697,7 @@
         right: 20px;
         line-height: 1;
         transition: color 0.4s;
+        z-index: 3;
       }
 
       .service-card:hover .service-num {
@@ -596,6 +709,8 @@
         height: 48px;
         margin-bottom: 28px;
         color: var(--navy);
+        position: relative;
+        z-index: 3;
       }
 
       .service-name {
@@ -604,6 +719,8 @@
         letter-spacing: 2px;
         color: var(--navy);
         margin-bottom: 16px;
+        position: relative;
+        z-index: 3;
       }
 
       .service-desc {
@@ -611,6 +728,8 @@
         line-height: 1.9;
         color: var(--text-mid);
         font-weight: 300;
+        position: relative;
+        z-index: 3;
       }
 
       /* WHY US */
@@ -629,6 +748,49 @@
       .why-visual {
         position: relative;
         height: 500px;
+        overflow: hidden;
+        border-radius: 18px;
+      }
+
+      /* WHY PHOTO (NEW) */
+      .why-photo {
+        position: absolute;
+        inset: -40px;
+        width: calc(100% + 80px);
+        height: calc(100% + 80px);
+        object-fit: cover;
+        opacity: 0.22;
+        filter: saturate(1.05) contrast(1.12) brightness(1.04);
+        pointer-events: none;
+
+        mask-image: radial-gradient(
+          circle at 50% 50%,
+          black 45%,
+          transparent 76%
+        );
+        -webkit-mask-image: radial-gradient(
+          circle at 50% 50%,
+          black 45%,
+          transparent 76%
+        );
+      }
+
+      /* mild overlay so rings pop (NEW) */
+      .why-visual::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            ellipse 70% 60% at 50% 45%,
+            rgba(15, 39, 68, 0.1),
+            transparent 60%
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(250, 248, 244, 0.35),
+            rgba(250, 248, 244, 0.05)
+          );
+        pointer-events: none;
       }
 
       .hexgrid {
@@ -637,6 +799,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        z-index: 2;
       }
 
       .hex-ring {
@@ -699,7 +862,8 @@
           0% 75%,
           0% 25%
         );
-        z-index: 2;
+        z-index: 3;
+        box-shadow: 0 18px 40px rgba(15, 39, 68, 0.18);
       }
 
       .hex-center svg {
@@ -873,6 +1037,129 @@
         font-size: 18px;
         letter-spacing: 2px;
         color: var(--navy);
+      }
+
+      /* CASES (NEW - added back like dark version) */
+      .cases {
+        padding: 110px 60px;
+        background: var(--cream);
+        border-top: 1px solid var(--border);
+      }
+
+      .cases-header {
+        max-width: 700px;
+        margin-bottom: 70px;
+      }
+
+      .cases-header p {
+        font-size: 15px;
+        line-height: 2;
+        color: var(--text-mid);
+        font-weight: 300;
+      }
+
+      .cases-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .case-tile {
+        position: relative;
+        background: var(--paper);
+        min-height: 220px;
+        overflow: hidden;
+        cursor: crosshair;
+        isolation: isolate;
+      }
+
+      .case-tile img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.92;
+        filter: saturate(1.06) contrast(1.1) brightness(1.05);
+        transform: scale(1.02);
+        transition: transform 0.5s ease, filter 0.4s ease;
+        z-index: 0;
+      }
+
+      /* overlay tuned for light theme: keeps text readable without "too dark" */
+      .case-tile::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            ellipse 85% 65% at 70% 35%,
+            rgba(184, 52, 27, 0.1),
+            transparent 60%
+          ),
+          linear-gradient(
+            to top,
+            rgba(15, 39, 68, 0.42),
+            rgba(15, 39, 68, 0.08)
+          );
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .case-meta {
+        position: absolute;
+        left: 22px;
+        bottom: 20px;
+        z-index: 2;
+      }
+
+      .case-kicker {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 9px;
+        letter-spacing: 4px;
+        color: rgba(245, 242, 237, 0.88);
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        text-shadow: 0 10px 30px rgba(15, 39, 68, 0.35);
+      }
+
+      .case-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 22px;
+        letter-spacing: 2px;
+        color: #fff;
+        line-height: 1.1;
+        text-shadow: 0 10px 30px rgba(15, 39, 68, 0.35);
+      }
+
+      .case-badge {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        z-index: 2;
+        padding: 8px 12px;
+        border: 1px solid rgba(245, 242, 237, 0.55);
+        background: rgba(15, 39, 68, 0.42);
+        backdrop-filter: blur(10px);
+        font-family: "Share Tech Mono", monospace;
+        font-size: 9px;
+        letter-spacing: 3px;
+        color: rgba(245, 242, 237, 0.95);
+        text-transform: uppercase;
+        clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      }
+
+      .case-tile:hover img {
+        transform: scale(1.08);
+        filter: saturate(1.12) contrast(1.16) brightness(1.08);
+      }
+
+      .case-tile.span-2 {
+        grid-column: span 2;
+        min-height: 280px;
       }
 
       /* CONTACT */
@@ -1127,6 +1414,7 @@
         flex-direction: column;
         align-items: center;
         gap: 8px;
+        z-index: 4;
       }
 
       .scroll-hint span {
@@ -1256,6 +1544,13 @@
         .hero {
           padding: 120px 24px 200px;
         }
+        .hero-content {
+          padding-bottom: 220px;
+        }
+        .hero-photo {
+          right: -20%;
+          opacity: 0.28;
+        }
         .radar-container {
           width: 280px;
           height: 280px;
@@ -1285,6 +1580,16 @@
         }
         .awards-grid {
           grid-template-columns: 1fr;
+        }
+        .cases {
+          padding: 80px 24px;
+        }
+        .cases-grid {
+          grid-template-columns: 1fr;
+        }
+        .case-tile.span-2 {
+          grid-column: span 1;
+          min-height: 240px;
         }
         .contact {
           padding: 80px 24px;
@@ -1353,6 +1658,7 @@
         <li><a href="#services">服務項目</a></li>
         <li><a href="#about">關於我們</a></li>
         <li><a href="#awards">榮譽認證</a></li>
+        <li><a href="#cases">成功案例</a></li>
         <li><a href="#contact">聯絡我們</a></li>
       </ul>
       <a href="#contact" class="nav-cta">立即諮詢</a>
@@ -1364,6 +1670,12 @@
       <div class="grid-lines"></div>
       <div class="corner-deco tl"></div>
       <div class="corner-deco br"></div>
+
+      <!-- HERO IMAGE (added back) -->
+      <div class="hero-photo-wrap" aria-hidden="true">
+        <div class="hero-photo-glow"></div>
+        <img class="hero-photo" src="building_1.png" alt="" />
+      </div>
 
       <div class="hero-content">
         <div class="typewriter-text">// TAISIANG SECURITY SYSTEM v5.2.1</div>
@@ -1382,7 +1694,7 @@
       </div>
 
       <!-- RADAR VISUAL -->
-      <div class="radar-container">
+      <div class="radar-container" aria-hidden="true">
         <svg
           class="radar-svg"
           viewBox="0 0 480 480"
@@ -1450,7 +1762,7 @@
         <div class="radar-blip"></div>
       </div>
 
-      <div class="scroll-hint">
+      <div class="scroll-hint" aria-hidden="true">
         <div class="scroll-line"></div>
         <span>scroll</span>
       </div>
@@ -1509,7 +1821,11 @@
       </div>
 
       <div class="services-grid">
-        <div class="service-card">
+        <div
+          class="service-card"
+          style="--card-img: url('security_welcome_home.png')"
+        >
+          <div class="img-tint" aria-hidden="true"></div>
           <div class="service-num">01</div>
           <svg
             class="service-icon"
@@ -1528,7 +1844,11 @@
           </p>
         </div>
 
-        <div class="service-card">
+        <div
+          class="service-card"
+          style="--card-img: url('security_in_lobby.png')"
+        >
+          <div class="img-tint" aria-hidden="true"></div>
           <div class="service-num">02</div>
           <svg
             class="service-icon"
@@ -1547,7 +1867,8 @@
           </p>
         </div>
 
-        <div class="service-card">
+        <div class="service-card" style="--card-img: url('building_2.png')">
+          <div class="img-tint" aria-hidden="true"></div>
           <div class="service-num">03</div>
           <svg
             class="service-icon"
@@ -1567,7 +1888,11 @@
           </p>
         </div>
 
-        <div class="service-card">
+        <div
+          class="service-card"
+          style="--card-img: url('security_standing.png')"
+        >
+          <div class="img-tint" aria-hidden="true"></div>
           <div class="service-num">04</div>
           <svg
             class="service-icon"
@@ -1585,7 +1910,11 @@
           </p>
         </div>
 
-        <div class="service-card">
+        <div
+          class="service-card"
+          style="--card-img: url('security_close_shot.png')"
+        >
+          <div class="img-tint" aria-hidden="true"></div>
           <div class="service-num">05</div>
           <svg
             class="service-icon"
@@ -1604,7 +1933,11 @@
           </p>
         </div>
 
-        <div class="service-card">
+        <div
+          class="service-card"
+          style="--card-img: url('security_in_garden.png')"
+        >
+          <div class="img-tint" aria-hidden="true"></div>
           <div class="service-num">06</div>
           <svg
             class="service-icon"
@@ -1630,7 +1963,8 @@
 
     <!-- WHY US -->
     <section class="why-us" id="about">
-      <div class="why-visual">
+      <div class="why-visual" aria-hidden="true">
+        <img class="why-photo" src="security_standing.png" alt="" />
         <div class="hexgrid">
           <div class="hex-ring"></div>
           <div class="hex-ring"></div>
@@ -1785,6 +2119,82 @@
       </div>
     </section>
 
+    <!-- CASES (added back) -->
+    <section class="cases" id="cases">
+      <div class="cases-header">
+        <div class="section-label">成功案例</div>
+        <h2 class="section-title">真實場域<br />實戰守護</h2>
+        <p>
+          以人員派駐與智慧監控為核心，於大樓、社區、商辦與公共空間落地執行。
+        </p>
+      </div>
+
+      <div class="cases-grid">
+        <div class="case-tile span-2">
+          <span class="case-badge">BUILDING</span>
+          <img src="building_3.png" alt="建築場域示意" />
+          <div class="case-meta">
+            <div class="case-kicker">ON-SITE PROTECTION</div>
+            <div class="case-title">商辦大樓駐點</div>
+          </div>
+        </div>
+
+        <div class="case-tile">
+          <span class="case-badge">SECURITY</span>
+          <img src="security_in_lobby.png" alt="大廳保全示意" />
+          <div class="case-meta">
+            <div class="case-kicker">ACCESS CONTROL</div>
+            <div class="case-title">大廳門禁管理</div>
+          </div>
+        </div>
+
+        <div class="case-tile">
+          <span class="case-badge">SECURITY</span>
+          <img src="security_close_shot.png" alt="保全近景示意" />
+          <div class="case-meta">
+            <div class="case-kicker">PROFESSIONAL</div>
+            <div class="case-title">專業形象與規範</div>
+          </div>
+        </div>
+
+        <div class="case-tile">
+          <span class="case-badge">BUILDING</span>
+          <img src="building_2.png" alt="社區大樓示意" />
+          <div class="case-meta">
+            <div class="case-kicker">COMMUNITY</div>
+            <div class="case-title">社區維安巡防</div>
+          </div>
+        </div>
+
+        <div class="case-tile">
+          <span class="case-badge">SECURITY</span>
+          <img src="security_in_garden.png" alt="戶外保全示意" />
+          <div class="case-meta">
+            <div class="case-kicker">PATROL</div>
+            <div class="case-title">戶外動線巡邏</div>
+          </div>
+        </div>
+
+        <div class="case-tile">
+          <span class="case-badge">SECURITY</span>
+          <img src="security_standing.png" alt="保全站姿示意" />
+          <div class="case-meta">
+            <div class="case-kicker">PRESENCE</div>
+            <div class="case-title">定點守望威懾</div>
+          </div>
+        </div>
+
+        <div class="case-tile">
+          <span class="case-badge">SECURITY</span>
+          <img src="security_welcome_home.png" alt="迎賓保全示意" />
+          <div class="case-meta">
+            <div class="case-kicker">HOSPITALITY</div>
+            <div class="case-title">迎賓與訪客引導</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- CONTACT -->
     <section class="contact" id="contact">
       <div class="contact-info">
@@ -1910,7 +2320,7 @@
         });
       });
 
-      // Scroll reveal
+      // Scroll reveal (kept from your light version)
       const revealObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -1925,7 +2335,7 @@
 
       document
         .querySelectorAll(
-          ".service-card, .feature-item, .contact-row, .award-card, .cert-badge"
+          ".service-card, .feature-item, .contact-row, .award-card, .cert-badge, .cases-header, .case-tile, .services-header"
         )
         .forEach((el) => {
           el.style.opacity = "0";
