@@ -2,6 +2,8 @@
 
 高端 B2B 工業科技一頁式網站，使用 Next.js、TypeScript、Tailwind CSS、GSAP ScrollTrigger、Framer Motion、Lenis，並整合改寫自 Radiant Shaders 的 Canvas Kinetic Grid / Flow Field。
 
+Design by Ethan
+
 ## 檔案結構
 
 - `app/layout.tsx`：SEO metadata、字體與全域 layout
