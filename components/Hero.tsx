@@ -14,10 +14,17 @@ function splitText(text: string) {
   ));
 }
 
+function getHeroLogo(slideId: string) {
+  if (slideId === "mitutoyo") return { url: "/images/mitutoyo-logo.png", label: "Mitutoyo" };
+  if (slideId === "siemens") return { url: "/images/siemens-logo.png", label: "Siemens" };
+  return null;
+}
+
 export function Hero() {
   const [active, setActive] = useState(0);
   const scope = useRef<HTMLElement | null>(null);
   const slide = heroSlides[active];
+  const logo = getHeroLogo(slide.id);
 
   useEffect(() => {
     const timer = window.setInterval(() => setActive((current) => (current + 1) % heroSlides.length), 6200);
@@ -44,14 +51,22 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto grid min-h-[calc(100svh-6rem)] max-w-7xl items-center px-4 pb-24 md:px-8 lg:grid-cols-[1.06fr_0.94fr]">
         <div className="max-w-4xl">
-          <p className="hero-sub font-mono text-xs uppercase tracking-[0.3em]" style={{ color: slide.accent }}>
+          {logo && (
+            <div
+              className="hero-sub mb-5 h-8 w-44 bg-no-repeat md:mb-6 md:h-10 md:w-64"
+              style={{ backgroundImage: `url(${logo.url})`, backgroundPosition: "center", backgroundSize: "cover" }}
+              role="img"
+              aria-label={`${logo.label} logo`}
+            />
+          )}
+          <p className="hero-sub font-mono text-sm uppercase tracking-[0.3em] md:text-[0.95rem]" style={{ color: slide.accent }}>
             {slide.eyebrow}
           </p>
           <h1 className="mt-6 max-w-5xl overflow-hidden pb-3 font-display text-[clamp(3rem,6.7vw,7rem)] font-semibold leading-[1.08] tracking-normal text-ink split-chars md:pb-4">
             {splitText(slide.title)}
           </h1>
           <p className="hero-sub mt-7 max-w-2xl text-lg font-medium leading-8 text-steel md:text-xl">{slide.subtitle}</p>
-          <div className="hero-sub mt-8 flex flex-col gap-2 sm:mt-10 sm:flex-row sm:gap-4">
+          <div className="hero-sub absolute bottom-24 left-4 right-4 mt-0 flex flex-col gap-2 sm:static sm:mt-10 sm:flex-row sm:gap-4">
             <a href={slide.href} className="scan-button inline-flex items-center justify-center gap-3 px-6 py-3 font-mono text-xs uppercase tracking-[0.22em] sm:px-7 sm:py-4">
               <ScanLine size={16} />
               {slide.cta}

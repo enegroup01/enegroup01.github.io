@@ -4214,6 +4214,9 @@ video {
 .bottom-20 {
   bottom: 5rem;
 }
+.bottom-24 {
+  bottom: 6rem;
+}
 .bottom-4 {
   bottom: 1rem;
 }
@@ -4296,14 +4299,17 @@ video {
   margin-left: auto;
   margin-right: auto;
 }
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
 .mb-8 {
   margin-bottom: 2rem;
 }
+.mt-0 {
+  margin-top: 0px;
+}
 .mt-1 {
   margin-top: 0.25rem;
-}
-.mt-10 {
-  margin-top: 2.5rem;
 }
 .mt-12 {
   margin-top: 3rem;
@@ -4374,6 +4380,9 @@ video {
 .h-56 {
   height: 14rem;
 }
+.h-8 {
+  height: 2rem;
+}
 .h-9 {
   height: 2.25rem;
 }
@@ -4424,6 +4433,9 @@ video {
 }
 .w-2 {
   width: 0.5rem;
+}
+.w-44 {
+  width: 11rem;
 }
 .w-56 {
   width: 14rem;
@@ -4730,6 +4742,9 @@ video {
 .bg-\[size\:72px_72px\] {
   background-size: 72px 72px;
 }
+.bg-no-repeat {
+  background-repeat: no-repeat;
+}
 .p-4 {
   padding: 1rem;
 }
@@ -4754,6 +4769,10 @@ video {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
 }
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
 .px-7 {
   padding-left: 1.75rem;
   padding-right: 1.75rem;
@@ -4766,6 +4785,10 @@ video {
   padding-top: 3rem;
   padding-bottom: 3rem;
 }
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -4774,25 +4797,17 @@ video {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
-.px-6 {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-.py-2\.5 {
-  padding-top: 0.625rem;
-  padding-bottom: 0.625rem;
-}
 .pb-24 {
   padding-bottom: 6rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
 }
 .pl-10 {
   padding-left: 2.5rem;
 }
 .pt-24 {
   padding-top: 6rem;
-}
-.pb-3 {
-  padding-bottom: 0.75rem;
 }
 .text-center {
   text-align: center;
@@ -4859,14 +4874,11 @@ video {
 .leading-8 {
   line-height: 2rem;
 }
-.leading-\[1\.02\] {
-  line-height: 1.02;
+.leading-\[1\.08\] {
+  line-height: 1.08;
 }
 .leading-tight {
   line-height: 1.25;
-}
-.leading-\[1\.08\] {
-  line-height: 1.08;
 }
 .tracking-\[0\.18em\] {
   letter-spacing: 0.18em;
@@ -5000,11 +5012,6 @@ video {
 }
 .transition {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-.transition-all {
-  transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -5179,6 +5186,10 @@ button {
 
 @media (min-width: 640px) {
 
+  .sm\:static {
+    position: static;
+  }
+
   .sm\:mt-10 {
     margin-top: 2.5rem;
   }
@@ -5204,8 +5215,20 @@ button {
 
 @media (min-width: 768px) {
 
+  .md\:mb-6 {
+    margin-bottom: 1.5rem;
+  }
+
   .md\:inline-flex {
     display: inline-flex;
+  }
+
+  .md\:h-10 {
+    height: 2.5rem;
+  }
+
+  .md\:w-64 {
+    width: 16rem;
   }
 
   .md\:grid-cols-2 {
@@ -5248,6 +5271,10 @@ button {
   .md\:text-6xl {
     font-size: 3.75rem;
     line-height: 1;
+  }
+
+  .md\:text-\[0\.95rem\] {
+    font-size: 0.95rem;
   }
 
   .md\:text-lg {

@@ -40,6 +40,11 @@ const rgba = (rgb: readonly number[], alpha: number) => `rgba(${rgb[0]}, ${rgb[1
 
 export function RadiantTesseractShadow({ tone = "ching", className = "" }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const toneRef = useRef<Tone>(tone);
+
+  useEffect(() => {
+    toneRef.current = tone;
+  }, [tone]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -47,7 +52,6 @@ export function RadiantTesseractShadow({ tone = "ching", className = "" }: Props
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    const colors = palettes[tone];
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
     const vertices = Array.from({ length: 16 }, (_, i) => [
@@ -129,6 +133,7 @@ export function RadiantTesseractShadow({ tone = "ching", className = "" }: Props
     };
 
     const draw = (now: number) => {
+      const colors = palettes[toneRef.current];
       const time = reduced ? 0 : (now - start) / 1000;
       const cx = width * 0.62;
       const cy = height * 0.5;
@@ -239,7 +244,7 @@ export function RadiantTesseractShadow({ tone = "ching", className = "" }: Props
       canvas.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
     };
-  }, [tone]);
+  }, []);
 
   return <canvas ref={canvasRef} className={`absolute inset-0 h-full w-full ${className}`} aria-hidden="true" />;
 }
