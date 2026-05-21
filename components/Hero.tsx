@@ -4,7 +4,7 @@ import { RadiantTesseractShadow } from "@/components/RadiantTesseractShadow";
 import { heroSlides } from "@/lib/data";
 import gsap from "gsap";
 import { ChevronRight, ScanLine } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function splitText(text: string) {
   return text.split("").map((char, index) => (
@@ -18,7 +18,6 @@ export function Hero() {
   const [active, setActive] = useState(0);
   const scope = useRef<HTMLElement | null>(null);
   const slide = heroSlides[active];
-  const progress = useMemo(() => ((active + 1) / heroSlides.length) * 100, [active]);
 
   useEffect(() => {
     const timer = window.setInterval(() => setActive((current) => (current + 1) % heroSlides.length), 6200);
@@ -48,16 +47,16 @@ export function Hero() {
           <p className="hero-sub font-mono text-xs uppercase tracking-[0.3em]" style={{ color: slide.accent }}>
             {slide.eyebrow}
           </p>
-          <h1 className="mt-6 max-w-5xl overflow-hidden font-display text-[clamp(3rem,6.7vw,7rem)] font-semibold leading-[1.02] tracking-normal text-ink split-chars">
+          <h1 className="mt-6 max-w-5xl overflow-hidden pb-3 font-display text-[clamp(3rem,6.7vw,7rem)] font-semibold leading-[1.08] tracking-normal text-ink split-chars md:pb-4">
             {splitText(slide.title)}
           </h1>
           <p className="hero-sub mt-7 max-w-2xl text-lg font-medium leading-8 text-steel md:text-xl">{slide.subtitle}</p>
-          <div className="hero-sub mt-10 flex flex-col gap-4 sm:flex-row">
-            <a href={slide.href} className="scan-button inline-flex items-center justify-center gap-3 px-7 py-4 font-mono text-xs uppercase tracking-[0.22em]">
+          <div className="hero-sub mt-8 flex flex-col gap-2 sm:mt-10 sm:flex-row sm:gap-4">
+            <a href={slide.href} className="scan-button inline-flex items-center justify-center gap-3 px-6 py-3 font-mono text-xs uppercase tracking-[0.22em] sm:px-7 sm:py-4">
               <ScanLine size={16} />
               {slide.cta}
             </a>
-            <a href="#about" className="inline-flex items-center justify-center gap-2 px-2 py-4 font-mono text-xs uppercase tracking-[0.22em] text-steel transition hover:text-ink">
+            <a href="#about" className="inline-flex items-center justify-center gap-2 px-2 py-2.5 font-mono text-xs uppercase tracking-[0.22em] text-steel transition hover:text-ink sm:py-4">
               企業能力
               <ChevronRight size={16} />
             </a>
@@ -78,9 +77,6 @@ export function Hero() {
               aria-label={`切換至 ${item.title}`}
             />
           ))}
-        </div>
-        <div className="mt-6 h-px bg-slate-900/15">
-          <div className="h-full transition-all duration-700" style={{ width: `${progress}%`, backgroundColor: slide.accent }} />
         </div>
       </div>
     </section>

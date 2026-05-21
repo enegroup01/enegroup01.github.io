@@ -36,6 +36,11 @@ const mix = (a: readonly number[], b: readonly number[], t: number) => [
   Math.round(a[2] + (b[2] - a[2]) * t)
 ];
 
+const branchingTreeDemoParams = {
+  growthSpeed: 0.008,
+  branchDepth: 9
+};
+
 export function RadiantIndustrialShader({ variant, tone = "ching", className = "" }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -180,11 +185,11 @@ export function RadiantIndustrialShader({ variant, tone = "ching", className = "
 
     const drawTree = (time: number) => {
       clearPaper(0.46);
-      const cx = width * 0.58;
-      const baseY = height * 0.95;
-      const maxDepth = mobile ? 7 : 9;
+      const cx = width * (mobile ? 0.5 : 0.58);
+      const baseY = height * (mobile ? 0.68 : 0.84);
+      const maxDepth = branchingTreeDemoParams.branchDepth;
       const sway = (pointer.active ? (pointer.x / width - 0.5) * 0.28 : 0) + Math.sin(time * 0.35) * 0.045;
-      const growth = reduced ? 1 : Math.min(1, ((time * 0.16) % 1.4) / 1.05);
+      const growth = reduced ? 1 : Math.min(1, (((time * 60 * branchingTreeDemoParams.growthSpeed) % 1.4) / 1.05));
 
       const drawBranch = (x: number, y: number, len: number, angle: number, depth: number, seed: number) => {
         if (depth > maxDepth || len < 5) return;
@@ -226,7 +231,7 @@ export function RadiantIndustrialShader({ variant, tone = "ching", className = "
         }
       };
 
-      drawBranch(cx, baseY, height * 0.18, -Math.PI / 2, 0, 1);
+      drawBranch(cx, baseY, height * (mobile ? 0.15 : 0.18), -Math.PI / 2, 0, 1);
     };
 
     const drawPendulum = (time: number) => {
