@@ -7,7 +7,6 @@ import { MachiningStory } from "@/components/MachiningStory";
 import { ProductGrid } from "@/components/ProductGrid";
 import { SiemensShowcase } from "@/components/SiemensShowcase";
 import { TechDivider } from "@/components/TechDivider";
-import { TrustStats } from "@/components/TrustStats";
 import { useGsapReveal } from "@/hooks/useGsapReveal";
 import { useLenis } from "@/hooks/useLenis";
 import { useRef } from "react";
@@ -21,7 +20,6 @@ export default function Home() {
     <main ref={scope} className="site-shell min-h-screen">
       <Header />
       <Hero />
-      <TrustStats />
       <ProductGrid />
       <MachiningStory />
       <SiemensShowcase />

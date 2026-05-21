@@ -1,12 +1,10 @@
 import {
-  BadgeCheck,
   Binary,
   Box,
   CircleGauge,
   Cpu,
   DraftingCompass,
   Factory,
-  Gauge,
   Layers3,
   Mail,
   Microscope,
@@ -67,13 +65,6 @@ export const heroSlides = [
     mode: "white"
   }
 ] as const;
-
-export const trustStats = [
-  { value: 18, suffix: "+", label: "精密量測專業", icon: Gauge },
-  { value: 2, suffix: "大", label: "授權品牌代理", icon: BadgeCheck },
-  { value: 4, suffix: "段", label: "工程整合流程", icon: Layers3 },
-  { value: 12, suffix: "+", label: "服務產業範圍", icon: Factory }
-];
 
 export const mitutoyoProducts = [
   { name: "外徑測微器", text: "高解析手感與穩定棘輪機構，適合精密外徑尺寸檢查。", image: "linear-gradient(135deg,#fff7f0,#f36b21 58%,#f8b27f)" },

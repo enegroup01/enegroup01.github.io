@@ -15,8 +15,8 @@ function splitText(text: string) {
 }
 
 function getHeroLogo(slideId: string) {
-  if (slideId === "mitutoyo") return { url: "/images/mitutoyo-logo.png", label: "Mitutoyo" };
-  if (slideId === "siemens") return { url: "/images/siemens-logo.png", label: "Siemens" };
+  if (slideId === "mitutoyo") return { url: "/images/mitutoyo-logo.png", label: "Mitutoyo", className: "h-8 w-44 md:h-10 md:w-64", fit: "cover" };
+  if (slideId === "siemens") return { url: "/images/siemens-logo.png", label: "Siemens", className: "h-8 w-44 md:h-10 md:w-64", fit: "cover" };
   return null;
 }
 
@@ -53,8 +53,8 @@ export function Hero() {
         <div className="max-w-4xl">
           {logo && (
             <div
-              className="hero-sub mb-5 h-8 w-44 bg-no-repeat md:mb-6 md:h-10 md:w-64"
-              style={{ backgroundImage: `url(${logo.url})`, backgroundPosition: "center", backgroundSize: "cover" }}
+              className={`hero-sub mb-4 max-w-full bg-no-repeat md:mb-5 ${logo.className}`}
+              style={{ backgroundImage: `url(${logo.url})`, backgroundPosition: "left center", backgroundSize: logo.fit }}
               role="img"
               aria-label={`${logo.label} logo`}
             />
