@@ -21,8 +21,8 @@ export default function Home() {
       <Header />
       <Hero />
       <ProductGrid />
-      <MachiningStory />
       <SiemensShowcase />
+      <MachiningStory />
       <TechDivider />
       <AboutContact />
       <div className="noise-overlay" />
