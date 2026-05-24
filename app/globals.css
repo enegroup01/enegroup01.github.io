@@ -117,17 +117,136 @@ button {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
 }
 
-@keyframes softwareScan {
+.software-showcase-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    linear-gradient(120deg, transparent 0%, rgba(79, 143, 216, 0.11) 45%, rgba(0, 143, 126, 0.16) 50%, transparent 58%);
+  transform: translateX(-100%);
+  animation: softwareSurfaceSweep 8s ease-in-out infinite;
+}
+
+.software-chip {
+  position: relative;
+  overflow: hidden;
+}
+
+.software-chip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(79, 143, 216, 0.16), transparent);
+  transform: translateX(-120%);
+  animation: softwareChipSweep 4.2s ease-in-out infinite;
+}
+
+.software-feature-card {
+  opacity: 0;
+  animation: softwarePanelIn 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.software-feature-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ching-blue), #008f7e, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 500ms ease;
+}
+
+.software-feature-card:hover::before {
+  transform: scaleX(1);
+}
+
+.software-icon-wrap {
+  filter: drop-shadow(0 0 0 rgba(79, 143, 216, 0));
+}
+
+.software-feature-card:hover .software-icon-wrap {
+  animation: softwareIconPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes softwareFloat {
   0%, 100% {
-    transform: translateX(-72%);
-    opacity: 0.15;
+    transform: translate3d(0, 0, 0) scale(1);
   }
-  48% {
-    opacity: 0.9;
+  50% {
+    transform: translate3d(0, -8px, 0) scale(1.012);
   }
-  52% {
-    transform: translateX(72%);
-    opacity: 0.9;
+}
+
+@keyframes softwareScanLine {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(-28px) scaleX(0.72);
+  }
+  45%, 55% {
+    opacity: 0.85;
+    transform: translateY(156px) scaleX(1);
+  }
+}
+
+@keyframes softwareUnderline {
+  0%, 100% {
+    transform: translateX(-36%);
+  }
+  50% {
+    transform: translateX(82%);
+  }
+}
+
+@keyframes softwareSurfaceSweep {
+  0%, 72%, 100% {
+    transform: translateX(-105%);
+    opacity: 0;
+  }
+  82% {
+    opacity: 1;
+  }
+  92% {
+    transform: translateX(105%);
+    opacity: 0;
+  }
+}
+
+@keyframes softwareChipSweep {
+  0%, 55%, 100% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  72% {
+    opacity: 1;
+  }
+  88% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+@keyframes softwarePanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes softwareIconPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 0 rgba(79, 143, 216, 0));
+    transform: translateY(0);
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(79, 143, 216, 0.32));
+    transform: translateY(-2px);
   }
 }
 
