@@ -168,32 +168,73 @@ export const machiningSteps = [
 
 export const siemensProducts = [
   {
-    id: "s1",
-    title: "Siemens 產品 1",
-    text: "建立從概念設計到製造資料的工程模型管理流程。",
-    modules: ["CAD Modeling", "Revision Control", "Tooling Data", "Manufacturing Handoff"],
+    id: "nx",
+    title: "Siemens NX",
+    category: "CAD / Design",
+    chineseName: "Siemens NX 高階電腦輔助設計軟體",
+    englishName: "Siemens NX (Computer-Aided Design)",
+    image: "/images/siemens-01-nx.png",
+    text: "整合高階三維建模、大型組合件管理、MBD/PMI 與 AI 智能助理，支援從設計到下游製造的一致工程資料流。",
+    coreFunctions: [
+      "高階三維實體與曲面建模，支援 Synchronous Technology 直接編輯第三方 CAD 幾何。",
+      "Large Assembly Management 可流暢處理數萬個零件組成的複雜系統。",
+      "支援 MBD/PMI，在三維模型上直接標註製造資訊，銜接無紙化設計流程。",
+      "AI Copilot 依操作情境提供建模、PMI 生成與產品模擬指引。"
+    ],
+    features: ["CAD / CAE / CAM 共享單一數據源", "參數化設計與 AI 智慧建議提升複雜幾何修改效率"],
+    modules: ["Synchronous Modeling", "Large Assembly", "MBD / PMI", "AI Copilot"],
     accent: "#008f7e"
   },
   {
-    id: "s3",
-    title: "Siemens 產品 3",
-    text: "結合模擬、檢核與流程節點，減少設計變更成本。",
-    modules: ["Simulation", "Tolerance Check", "Workflow", "Report Pack"],
+    id: "flotherm",
+    title: "Simcenter Flotherm",
+    category: "Thermal CFD",
+    chineseName: "Simcenter Flotherm 電子散熱模擬軟體",
+    englishName: "Simcenter Flotherm",
+    image: "/images/siemens-02-flotherm.jpg",
+    text: "針對 PCB、晶片封裝、伺服器機櫃與電子設備進行 CFD 與熱傳導模擬，協助在設計早期找出熱瓶頸。",
+    coreFunctions: [
+      "電子系統專用 CFD 求解器，適用 PCB、晶片封裝、機櫃與散熱模組。",
+      "以三維流線與熱動態等高線呈現風扇、散熱片與熱累積區域。",
+      "支援主流 EDA 板面佈局與銅箔層幾何資料導入，快速建立熱模擬網格。"
+    ],
+    features: ["電子散熱領域常用標準工具", "在原型前預測 hotspots，降低實體打樣成本"],
+    modules: ["Electronic CFD", "Thermal Flow", "EDA Import", "Hotspot Review"],
     accent: "#4f8fd8"
   },
   {
-    id: "s4",
-    title: "Siemens 產品 4",
-    text: "串接製造現場與工程資料，提升工單透明度與追溯性。",
-    modules: ["CAM Bridge", "Process Plan", "Shopfloor Sync", "Quality Link"],
-    accent: "#f36b21"
+    id: "solid-edge-simulation",
+    title: "Solid Edge Simulation",
+    category: "FEA / Simulation",
+    chineseName: "Solid Edge 結構與有限元素分析模組",
+    englishName: "Solid Edge Simulation",
+    image: "/images/siemens-03-solid-edge.jpg",
+    text: "內嵌於 Solid Edge 設計環境的設計驗證工具，可在建模當下同步評估零件強度、變形與應力集中。",
+    coreFunctions: [
+      "支援靜力學、動力學、模態分析與挫曲模擬，驗證零件與組合件結構。",
+      "自動將複雜幾何轉換為高階有限元素網格，降低前處理門檻。",
+      "以 Von Mises Stress 彩色圖譜精準標示受載時的應力集中點。"
+    ],
+    features: ["Design-Centric CAE 直接嵌入設計流程", "可配合 Generative Design 進行數位輕量化"],
+    modules: ["FEA Stress", "Mesh Generation", "Modal Check", "Generative Design"],
+    accent: "#4b48a5"
   },
   {
-    id: "s13",
-    title: "Siemens 產品 13",
-    text: "支援企業級數位孿生、資料治理與跨部門協作導入。",
-    modules: ["Digital Twin", "Data Governance", "API Integration", "Training"],
-    accent: "#4b48a5"
+    id: "nx-cam",
+    title: "NX CAM",
+    category: "CAM / Manufacturing",
+    chineseName: "NX CAM 電腦輔助製造與數控加工軟體",
+    englishName: "NX CAM (Computer-Aided Manufacturing)",
+    image: "/images/siemens-04-nx-cam.png",
+    text: "支援多軸 CNC 編程、機床與夾具模擬、CAM Assist 智慧刀路建議，降低撞機風險並提升加工效率。",
+    coreFunctions: [
+      "支援 2.5 軸、3 軸、5 軸聯動、車銑複合與機器人加工路徑生成。",
+      "在虛擬環境復現機床、刀具、工件與夾具運動軌跡，進行加工前驗證。",
+      "CAM Assist 自動識別零件幾何特徵，推薦切削參數、粗加工與精加工刀路。"
+    ],
+    features: ["機床碰撞與干涉檢查降低下機風險", "AI 特徵辨識與高速銑削路徑縮短 CNC 編程與切削工時"],
+    modules: ["CNC Programming", "Machine Simulation", "CAM Assist", "Collision Check"],
+    accent: "#008f7e"
   }
 ];
 
