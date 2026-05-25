@@ -67,15 +67,96 @@ export const heroSlides = [
 ] as const;
 
 export const mitutoyoProducts = [
-  { name: "外徑測微器", text: "高解析手感與穩定棘輪機構，適合精密外徑尺寸檢查。", image: "linear-gradient(135deg,#fff7f0,#f36b21 58%,#f8b27f)" },
-  { name: "深度測微器", text: "用於槽深、階差與孔深量測，支援治具化檢驗流程。", image: "linear-gradient(135deg,#fff8f2,#e95e1a 55%,#d9e4f4)" },
-  { name: "內徑測微器", text: "精準掌握孔徑與內槽尺寸，降低人工讀值偏差。", image: "linear-gradient(135deg,#fff4eb,#f36b21 50%,#6f7780)" },
-  { name: "三點式內徑測微器", text: "三點接觸提升孔徑同心與重複量測穩定度。", image: "linear-gradient(135deg,#fff8f4,#d95f22 52%,#aeb8c5)" },
-  { name: "游標卡尺", text: "日常檢驗與現場巡檢的基礎精密量測工具。", image: "linear-gradient(135deg,#fff6ed,#f36b21 45%,#edf2f7)" },
-  { name: "高度規", text: "搭配平台量測高度、段差與加工基準建立。", image: "linear-gradient(135deg,#fff7f1,#f36b21 48%,#8d98a5)" },
-  { name: "百分表 / 量表", text: "檢測平面度、偏擺、定位與製程中變動量。", image: "linear-gradient(135deg,#fff5ef,#e16022 50%,#f2f5f9)" },
-  { name: "粗糙度量測儀", text: "掌握加工表面紋理與規格驗收的量化依據。", image: "linear-gradient(135deg,#fff8f2,#f36b21 42%,#4f8fd8)" },
-  { name: "投影機 / 影像量測", text: "適合輪廓、角度與複合幾何的非接觸式檢測。", image: "linear-gradient(135deg,#fff4eb,#f36b21 52%,#4b48a5)" }
+  {
+    name: "外徑測微器",
+    englishName: "Digimatic Outside Micrometer (QuantuMike Series)",
+    image: "/images/mitutoyo-01-outside-micrometer.png",
+    features: [
+      "快速進給機構，螺桿螺距為一般測微器的 4 倍，大幅提升量測效率。",
+      "IP65 防塵防水等級，無懼切削液濺灑，適合現場加工環境。"
+    ],
+    spec: "量程 0-1\" / 分辨率 0.001mm (.00005\")"
+  },
+  {
+    name: "卡尺",
+    englishName: "Digimatic Caliper (ABSOLUTE Series)",
+    image: "/images/mitutoyo-02-caliper.png",
+    features: [
+      "採用 Mitutoyo 專利 ABSOLUTE 靜電容量式感應器，開機免重設原點。",
+      "滑行順暢舒適，人體工學設計大幅降低長時間使用的手部疲勞。"
+    ],
+    spec: "量程 0-150mm (0-6\") / 分辨率 0.01mm (.0005\")"
+  },
+  {
+    name: "數位式量錶",
+    englishName: "Digimatic Indicator (ID-C Series ABSOLUTE)",
+    image: "/images/mitutoyo-03-digimatic-indicator.png",
+    features: [
+      "大型液晶顯示幕搭配類比條狀圖，動態公差判定一目了然。",
+      "支援 330° 螢幕旋轉，無論安裝於何種角度的治具上皆易於讀數。"
+    ],
+    spec: "分辨率 0.001mm / 具備 ABSOLUTE 原點記憶功能"
+  },
+  {
+    name: "指示量錶",
+    englishName: "Dial Indicator (No. 1900A-10)",
+    image: "/images/mitutoyo-04-dial-indicator.png",
+    features: [
+      "經典高精度機械指針式量錶，Full Jeweled 寶石軸承設計，摩擦力極小。",
+      "完善防震結構，確保嚴苛環境下的耐用度與指針穩定度。"
+    ],
+    spec: "刻度值 1um (0.001mm) / 平滑倒置式背蓋"
+  },
+  {
+    name: "槓桿式量錶",
+    englishName: "Dial Test Indicator (Pocket Type)",
+    image: "/images/mitutoyo-05-dial-test-indicator.png",
+    features: [
+      "專為量測表面平直度、真圓度及對心校正設計，觸針可雙向感應。",
+      "結構緊湊輕巧，適合治具內部或窄小空間的精密量測。"
+    ],
+    spec: "刻度值 0.01mm / 紅寶石或碳化鎢測針"
+  },
+  {
+    name: "量錶應用及測微台",
+    englishName: "Granite Comparator Stand",
+    image: "/images/mitutoyo-06-comparator-stand.png",
+    features: [
+      "高硬度天然花崗岩黑石底座，質地穩定、不易變形且不生鏽。",
+      "高剛性垂直支柱搭配微調機構，是精密比較量測的必備工作台。"
+    ],
+    spec: "微動調整功能 / 適用多款標準夾徑量錶"
+  },
+  {
+    name: "高度計",
+    englishName: "Digimatic Height Gage (ABSOLUTE Linear Encoder)",
+    image: "/images/mitutoyo-07-height-gage.png",
+    features: [
+      "用於精密劃線與工件高度、階差量測，大尺寸手輪讓微進給更順暢。",
+      "高剛性結構有效確保量測時的垂直度與重現性。"
+    ],
+    spec: "最大量程 300mm / 具備數據輸出接口"
+  },
+  {
+    name: "深度計",
+    englishName: "Digimatic Depth Gage",
+    image: "/images/mitutoyo-08-depth-gage.png",
+    features: [
+      "寬大且精磨的底座接觸面，穩固貼合工件，精確量測盲孔、階差及槽深。",
+      "尺身刻度清晰，數位顯示幕讀數直覺，有效避免人為視差。"
+    ],
+    spec: "量程 0-200mm / 分辨率 0.01mm"
+  },
+  {
+    name: "三點內徑測微器",
+    englishName: "Digimatic Holtest (Three-Point Internal Micrometer)",
+    image: "/images/mitutoyo-09-holtest.png",
+    features: [
+      "三點式觸頭具備自動定心功能，能獲得高重現性的真圓內徑量測數據。",
+      "測頭表面經鈦合金鍍層處理，耐磨性極佳，延長使用壽命。"
+    ],
+    spec: "IP65 防塵防水等級 / 棘輪裝置確保恆定測力"
+  }
 ];
 
 export const machiningSteps = [
