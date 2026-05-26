@@ -63,9 +63,6 @@ export function SiemensShowcase() {
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/58 via-transparent to-transparent opacity-80" />
-                <div className="absolute left-4 top-4 bg-white/92 px-3 py-2 font-display text-3xl font-semibold leading-none text-siemens shadow-[0_12px_34px_rgba(42,55,78,0.12)]">
-                  0{index + 1}
-                </div>
                 <span className="absolute bottom-4 right-4 grid h-10 w-10 place-items-center border border-white/60 bg-white/88 text-siemens shadow-[0_14px_38px_rgba(42,55,78,0.16)] transition duration-300 group-hover:bg-siemens group-hover:text-white">
                   <Maximize2 size={17} strokeWidth={1.5} />
                 </span>
@@ -105,6 +102,9 @@ export function SiemensShowcase() {
               exit={{ y: 20, scale: 0.98, clipPath: "inset(8% 8% 8% 8%)" }}
               transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
             >
+              <button type="button" onClick={() => setSelectedIndex(null)} className="fixed right-5 top-5 z-[95] grid h-11 w-11 place-items-center border border-slate-900/10 bg-white/92 text-ink shadow-[0_14px_40px_rgba(0,0,0,0.18)] transition hover:border-siemens/40 hover:text-siemens md:right-8 md:top-8" aria-label="關閉 Siemens 詳細資訊">
+                <X size={20} strokeWidth={1.5} />
+              </button>
               <div className="relative min-h-[42vh] bg-[#eef8f7] lg:min-h-0">
                 <Image src={selectedProduct.image} alt={selectedProduct.chineseName} fill className="object-contain p-4 md:p-7" sizes="(min-width: 1024px) 64vw, 100vw" priority />
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-siemens to-transparent" />
@@ -127,9 +127,6 @@ export function SiemensShowcase() {
                     <h3 className="mt-4 text-3xl font-semibold leading-tight text-mist">{selectedProduct.chineseName}</h3>
                     <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-steel">{selectedProduct.englishName}</p>
                   </div>
-                  <button type="button" onClick={() => setSelectedIndex(null)} className="grid h-11 w-11 shrink-0 place-items-center border border-slate-900/10 text-ink transition hover:border-siemens/40 hover:text-siemens" aria-label="關閉 Siemens 詳細資訊">
-                    <X size={20} strokeWidth={1.5} />
-                  </button>
                 </div>
 
                 <p className="mt-6 leading-8 text-steel">{selectedProduct.text}</p>
