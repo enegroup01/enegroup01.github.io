@@ -18,7 +18,7 @@ import {
 export const navItems = [
   { label: "產品代理", href: "#mitutoyo" },
   { label: "精密加工", href: "#machining" },
-  { label: "Siemens", href: "#siemens" },
+  { label: "工業軟體", href: "#software" },
   { label: "關於慶鴻", href: "#about" },
   { label: "聯絡", href: "#contact" }
 ];
