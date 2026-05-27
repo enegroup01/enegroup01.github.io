@@ -763,6 +763,10 @@ export function RadiantIndustrialShader({ variant, tone = "ching", className = "
       if (running) return;
       running = true;
       start = performance.now();
+      if (variant === "laser-precision") {
+        laserNeedsReset = true;
+        laserLastTime = 0;
+      }
       frame = requestAnimationFrame(draw);
     };
 
@@ -783,7 +787,13 @@ export function RadiantIndustrialShader({ variant, tone = "ching", className = "
     if (variant === "spark-chamber") clearPaper(0.5);
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) startLoop();
+        if (entry.isIntersecting) {
+          if (variant === "laser-precision") {
+            laserNeedsReset = true;
+            laserLastTime = 0;
+          }
+          startLoop();
+        }
         else stopLoop();
       },
       { rootMargin: "180px" }

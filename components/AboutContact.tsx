@@ -12,11 +12,24 @@ export function AboutContact() {
             <SectionHeader
               eyebrow="About Ching Hong Precision"
               title="慶鴻精密是工業客戶的量測、加工與軟體整合夥伴"
-              text="我們專注於精密量測與代理產品專業，結合精密加工、工業應用服務與 Siemens 工程軟體銷售整合，協助客戶把尺寸品質、製程資料與數位設計流程連成可追溯的系統。"
+              text="我們以 Mitutoyo 精密量測與授權代理產品為核心，延伸至精密加工、工業應用服務與 Siemens 工程軟體銷售整合，協助客戶把尺寸品質、製程資料與數位設計流程連成可追溯的系統。"
             />
-            <p className="mt-8 leading-8 text-steel" data-reveal>
-              透過專業授權、原廠產品知識與現場工程經驗，慶鴻精密能在導入前協助確認規格，在交付後支援操作、檢驗與流程優化。從單一量測儀器到跨部門工程資料流，我們以可信賴的技術合作夥伴角色參與每一次精準決策。
-            </p>
+            <div className="mt-8 grid gap-4" data-reveal>
+              <div className="group relative overflow-hidden border border-slate-900/10 bg-white/72 p-5 shadow-[0_18px_52px_rgba(42,55,78,0.07)]">
+                <div className="absolute inset-y-4 left-0 w-1 bg-mitutoyo" />
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-mitutoyo">Mitutoyo / Measurement Standard</p>
+                <p className="mt-3 leading-8 text-steel">
+                  從量測儀器選型、規格確認到現場使用情境，慶鴻精密以原廠產品知識與代理服務經驗，協助客戶建立穩定、可重複驗證的尺寸品質基準。
+                </p>
+              </div>
+              <div className="group relative overflow-hidden border border-slate-900/10 bg-white/72 p-5 shadow-[0_18px_52px_rgba(42,55,78,0.07)]">
+                <div className="absolute inset-y-4 left-0 w-1 bg-gradient-to-b from-chingBlue to-chingViolet" />
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-chingBlue">Process / Data / Software Integration</p>
+                <p className="mt-3 leading-8 text-steel">
+                  透過精密加工、檢驗流程與 Siemens 工程軟體整合，我們把單一量測儀器延伸成跨部門工程資料流，讓導入、操作、檢驗與製程優化都能被清楚追蹤。
+                </p>
+              </div>
+            </div>
           </div>
           <div className="relative overflow-hidden border border-slate-900/10 bg-[#2f3439] shadow-[0_24px_90px_rgba(42,55,78,0.16)]" data-reveal>
             <div className="relative min-h-[430px] md:min-h-[520px]">
@@ -24,21 +37,21 @@ export function AboutContact() {
               <div className="absolute inset-5 border border-white/10 md:inset-8" />
               <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent md:inset-x-12" />
             </div>
-            <div className="grid gap-3 border-t border-white/10 bg-white/92 p-4 backdrop-blur md:absolute md:bottom-10 md:left-10 md:right-10 md:grid-cols-2 md:border-t-0 md:bg-transparent md:p-0 md:backdrop-blur-0">
+            <div className="grid gap-3 border-t border-white/10 bg-[#2f3439] p-4 backdrop-blur md:absolute md:bottom-10 md:left-10 md:right-10 md:grid-cols-2 md:border-t-0 md:bg-transparent md:p-0 md:backdrop-blur-0">
               {capabilities.map((item) => {
                 const Icon = item.icon;
                 return (
                   <div
                     key={item.title}
-                    className="group relative overflow-hidden border border-slate-900/10 bg-white/86 p-4 shadow-[0_12px_34px_rgba(42,55,78,0.08)] transition duration-500 md:border-white/14 md:bg-slate-950/34 md:shadow-[0_18px_54px_rgba(0,0,0,0.2)] md:backdrop-blur-xl md:hover:border-chingBlue/55 md:hover:bg-slate-950/44"
+                    className="group relative overflow-hidden border border-white/14 bg-slate-950/34 p-4 shadow-[0_18px_54px_rgba(0,0,0,0.2)] backdrop-blur-xl transition duration-500 hover:border-chingBlue/55 hover:bg-slate-950/44"
                   >
-                    <div className="absolute inset-x-0 top-0 hidden h-px bg-gradient-to-r from-transparent via-chingBlue/70 to-transparent md:block" />
-                    <div className="absolute inset-0 hidden bg-[linear-gradient(115deg,transparent,rgba(255,255,255,0.08),transparent)] opacity-0 transition duration-700 group-hover:translate-x-12 group-hover:opacity-100 md:block" />
+                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-chingBlue/70 to-transparent" />
+                    <div className="absolute inset-0 bg-[linear-gradient(115deg,transparent,rgba(255,255,255,0.08),transparent)] opacity-0 transition duration-700 group-hover:translate-x-12 group-hover:opacity-100" />
                     <div className="relative flex items-center gap-3">
-                      <span className="grid h-9 w-9 shrink-0 place-items-center border border-chingBlue/28 bg-chingBlue/8 text-chingViolet md:border-white/18 md:bg-white/8 md:text-white md:shadow-[0_0_26px_rgba(79,143,216,0.18)]">
+                      <span className="grid h-9 w-9 shrink-0 place-items-center border border-white/18 bg-white/8 text-white shadow-[0_0_26px_rgba(79,143,216,0.18)]">
                         <Icon size={18} strokeWidth={1.5} />
                       </span>
-                      <span className="text-sm font-medium text-ink md:text-white/90">{item.title}</span>
+                      <span className="text-sm font-medium text-white/90">{item.title}</span>
                     </div>
                   </div>
                 );
