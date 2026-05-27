@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 type ShaderVariant = "branching-tree" | "pendulum-wave" | "spark-chamber" | "laser-precision" | "clockwork-mind";
-type BrandTone = "ching" | "mitutoyo" | "siemens";
+type BrandTone = "ching" | "ching-soft" | "mitutoyo" | "siemens";
 
 type Props = {
   variant: ShaderVariant;
@@ -15,6 +15,11 @@ const tones = {
   ching: {
     a: [79, 143, 216],
     b: [75, 72, 165],
+    hot: [255, 255, 255]
+  },
+  "ching-soft": {
+    a: [157, 191, 235],
+    b: [172, 166, 225],
     hot: [255, 255, 255]
   },
   mitutoyo: {
@@ -57,6 +62,7 @@ export function RadiantIndustrialShader({ variant, tone = "ching", className = "
     let width = 1;
     let height = 1;
     let frame = 0;
+    let running = false;
     let start = performance.now();
     let pointer = { x: 0, y: 0, active: false };
 
@@ -429,13 +435,26 @@ export function RadiantIndustrialShader({ variant, tone = "ching", className = "
     };
 
     const draw = (now: number) => {
+      if (!running) return;
       const time = (now - start) / 1000;
       if (variant === "branching-tree") drawTree(time);
       if (variant === "pendulum-wave") drawPendulum(time);
       if (variant === "spark-chamber") drawSpark();
       if (variant === "laser-precision") drawLaser(time);
       if (variant === "clockwork-mind") drawClockwork(time);
+      if (!reduced) frame = requestAnimationFrame(draw);
+    };
+
+    const startLoop = () => {
+      if (running) return;
+      running = true;
+      start = performance.now();
       frame = requestAnimationFrame(draw);
+    };
+
+    const stopLoop = () => {
+      running = false;
+      cancelAnimationFrame(frame);
     };
 
     const onPointerMove = (event: PointerEvent) => {
@@ -448,13 +467,21 @@ export function RadiantIndustrialShader({ variant, tone = "ching", className = "
 
     resize();
     if (variant === "spark-chamber") clearPaper(0.5);
-    frame = requestAnimationFrame(draw);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) startLoop();
+        else stopLoop();
+      },
+      { rootMargin: "180px" }
+    );
+    observer.observe(canvas);
     window.addEventListener("resize", resize);
     canvas.addEventListener("pointermove", onPointerMove);
     canvas.addEventListener("pointerleave", onPointerLeave);
 
     return () => {
-      cancelAnimationFrame(frame);
+      stopLoop();
+      observer.disconnect();
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("pointerleave", onPointerLeave);

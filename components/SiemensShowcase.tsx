@@ -34,7 +34,7 @@ export function SiemensShowcase() {
   };
 
   return (
-    <section id="siemens" className="section-pad relative overflow-hidden bg-[#f4fbfa]">
+    <section id="siemens" className="section-pad-siemens relative overflow-hidden bg-[#f4fbfa]">
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,251,250,0.98),rgba(244,251,250,0.9),rgba(244,251,250,0.7))]" />
       <div className="absolute inset-0 bg-precision-grid bg-[size:80px_80px] opacity-50" />
       <div className="relative mx-auto max-w-7xl">

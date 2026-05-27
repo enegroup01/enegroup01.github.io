@@ -25,7 +25,6 @@ export default function Home() {
       <MachiningStory />
       <TechDivider />
       <AboutContact />
-      <div className="noise-overlay" />
     </main>
   );
 }

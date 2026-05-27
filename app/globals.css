@@ -58,6 +58,14 @@ button {
   padding: clamp(5rem, 9vw, 9rem) clamp(1rem, 4vw, 5rem);
 }
 
+.section-pad-product {
+  padding: clamp(5rem, 9vw, 9rem) clamp(1rem, 4vw, 5rem) clamp(2.5rem, 4.5vw, 4.5rem);
+}
+
+.section-pad-siemens {
+  padding: clamp(2.5rem, 4.5vw, 4.5rem) clamp(1rem, 4vw, 5rem) clamp(5rem, 9vw, 9rem);
+}
+
 .section-kicker {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -105,16 +113,6 @@ button {
 
 .split-chars span {
   display: inline-block;
-}
-
-.noise-overlay {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  opacity: 0.035;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
 }
 
 .software-showcase-card::before {
@@ -205,12 +203,65 @@ button {
   animation: productSwipeCue 1.9s ease-in-out infinite;
 }
 
+.machining-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(79, 143, 216, 0.12), transparent),
+    linear-gradient(180deg, rgba(79, 143, 216, 0.12), transparent 22%, transparent 78%, rgba(75, 72, 165, 0.08));
+  opacity: 0;
+  transform: translateX(-16%);
+  transition: opacity 420ms ease, transform 700ms ease;
+}
+
+.machining-card:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.machining-image-scan {
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.62) 48%, transparent 56%),
+    linear-gradient(rgba(79, 143, 216, 0.18) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 18px;
+  mix-blend-mode: screen;
+  transform: translateX(-120%);
+}
+
+.machining-card:hover .machining-image-scan {
+  animation: machiningScan 1.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.machining-progress {
+  transform: scaleX(0.18);
+  transform-origin: left;
+  opacity: 0.6;
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1), opacity 420ms ease;
+}
+
+.machining-card:hover .machining-progress {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
 @keyframes softwareFloat {
   0%, 100% {
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
     transform: translate3d(0, -8px, 0) scale(1.012);
+  }
+}
+
+@keyframes machiningScan {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
   }
 }
 

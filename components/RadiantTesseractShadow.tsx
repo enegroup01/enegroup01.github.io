@@ -79,6 +79,7 @@ export function RadiantTesseractShadow({ tone = "ching", className = "" }: Props
     let width = 1;
     let height = 1;
     let frame = 0;
+    let running = false;
     let start = performance.now();
     let mouseDown = false;
     let lastX = 0;
@@ -133,6 +134,7 @@ export function RadiantTesseractShadow({ tone = "ching", className = "" }: Props
     };
 
     const draw = (now: number) => {
+      if (!running) return;
       const colors = palettes[toneRef.current];
       const time = reduced ? 0 : (now - start) / 1000;
       const cx = width * 0.62;
@@ -211,7 +213,18 @@ export function RadiantTesseractShadow({ tone = "ching", className = "" }: Props
         ctx.fill();
       });
 
+      if (!reduced) frame = requestAnimationFrame(draw);
+    };
+
+    const startLoop = () => {
+      if (running) return;
+      running = true;
       frame = requestAnimationFrame(draw);
+    };
+
+    const stopLoop = () => {
+      running = false;
+      cancelAnimationFrame(frame);
     };
 
     const onPointerDown = (event: PointerEvent) => {
@@ -231,14 +244,22 @@ export function RadiantTesseractShadow({ tone = "ching", className = "" }: Props
     };
 
     resize();
-    frame = requestAnimationFrame(draw);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) startLoop();
+        else stopLoop();
+      },
+      { rootMargin: "180px" }
+    );
+    observer.observe(canvas);
     window.addEventListener("resize", resize);
     canvas.addEventListener("pointerdown", onPointerDown);
     canvas.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
 
     return () => {
-      cancelAnimationFrame(frame);
+      stopLoop();
+      observer.disconnect();
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("pointerdown", onPointerDown);
       canvas.removeEventListener("pointermove", onPointerMove);

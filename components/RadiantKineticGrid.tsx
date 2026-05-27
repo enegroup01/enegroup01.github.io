@@ -68,6 +68,7 @@ export function RadiantKineticGrid({ variant = "ching", density = "hero", classN
     let marginX = 0;
     let marginY = 0;
     let frame = 0;
+    let running = false;
     let lastTime = 0;
     let timeSinceImpulse = 0;
     let screenFlash = 0;
@@ -218,6 +219,7 @@ export function RadiantKineticGrid({ variant = "ching", density = "hero", classN
     };
 
     const render = (now: number) => {
+      if (!running) return;
       const time = now * 0.001;
       const dt = Math.min(0.05, lastTime ? time - lastTime : 0.016);
       lastTime = time;
@@ -300,7 +302,19 @@ export function RadiantKineticGrid({ variant = "ching", density = "hero", classN
 
       ctx.globalCompositeOperation = "source-over";
 
+      if (!prefersReduced) frame = requestAnimationFrame(render);
+    };
+
+    const startLoop = () => {
+      if (running) return;
+      running = true;
+      lastTime = 0;
       frame = requestAnimationFrame(render);
+    };
+
+    const stopLoop = () => {
+      running = false;
+      cancelAnimationFrame(frame);
     };
 
     const onPointerDown = (event: PointerEvent) => {
@@ -319,14 +333,22 @@ export function RadiantKineticGrid({ variant = "ching", density = "hero", classN
 
     resize();
     injectEdge();
-    frame = requestAnimationFrame(render);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) startLoop();
+        else stopLoop();
+      },
+      { rootMargin: "180px" }
+    );
+    observer.observe(canvas);
     window.addEventListener("resize", resize);
     canvas.addEventListener("pointerdown", onPointerDown);
     canvas.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
 
     return () => {
-      cancelAnimationFrame(frame);
+      stopLoop();
+      observer.disconnect();
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("pointerdown", onPointerDown);
       canvas.removeEventListener("pointermove", onPointerMove);

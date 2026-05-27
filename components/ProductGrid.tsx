@@ -33,7 +33,7 @@ export function ProductGrid() {
   };
 
   return (
-    <section id="mitutoyo" className="section-pad bg-carbon">
+    <section id="mitutoyo" className="section-pad-product bg-carbon">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeader
