@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 export function AboutContact() {
   return (
     <>
-      <section id="about" className="section-pad bg-carbon">
+      <section id="about" className="section-pad-compact bg-carbon">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.95fr_1.05fr]">
           <div>
             <SectionHeader
@@ -61,7 +61,7 @@ export function AboutContact() {
         </div>
       </section>
 
-      <section id="contact" className="section-pad relative overflow-hidden bg-white">
+      <section id="contact" className="section-pad-compact relative overflow-hidden bg-white">
         <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(79,143,216,0.08),rgba(75,72,165,0.06),rgba(255,255,255,0.92))]" />
         <div className="relative mx-auto max-w-7xl">
           <div className="metal-panel grid gap-10 p-7 md:p-10 lg:grid-cols-[1fr_0.8fr]">

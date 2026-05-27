@@ -44,7 +44,18 @@ export function SiemensShowcase() {
           text="整合 CAD 設計、電子散熱模擬、有限元素分析與 CAM 製造流程，讓工程資料從設計驗證一路銜接到加工現場。"
         />
 
-        <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4" data-stagger>
+        <div className="mt-10 flex items-center justify-between md:hidden" aria-hidden="true">
+          <div className="flex items-center gap-2 text-siemens">
+            <ChevronLeft size={18} strokeWidth={1.6} />
+            <div className="product-swipe-cue relative h-1.5 w-24 overflow-hidden bg-siemens/15">
+              <span className="absolute inset-y-0 left-0 w-9 bg-siemens" />
+            </div>
+            <ChevronRight size={18} strokeWidth={1.6} />
+          </div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-steel">01 / 04</p>
+        </div>
+
+        <div className="siemens-scroll mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-5 md:mt-12 md:grid md:snap-none md:grid-cols-2 md:overflow-visible md:pb-0 lg:grid-cols-4" data-stagger>
           {siemensProducts.map((product, index) => (
             <motion.button
               key={product.id}
@@ -52,7 +63,7 @@ export function SiemensShowcase() {
               onClick={() => setSelectedIndex(index)}
               whileHover={{ y: -6 }}
               transition={{ duration: 0.25 }}
-              className="group relative overflow-hidden border border-siemens/20 bg-white text-left shadow-[0_18px_58px_rgba(0,143,126,0.08)] transition duration-500 hover:border-siemens/45 hover:shadow-[0_28px_90px_rgba(0,143,126,0.16)]"
+              className="group relative w-[82vw] shrink-0 snap-center overflow-hidden border border-siemens/20 bg-white text-left shadow-[0_18px_58px_rgba(0,143,126,0.08)] transition duration-500 hover:border-siemens/45 hover:shadow-[0_28px_90px_rgba(0,143,126,0.16)] md:w-auto"
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-[#eff8f7]">
                 <Image

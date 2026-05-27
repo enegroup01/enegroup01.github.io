@@ -62,6 +62,8 @@ export function MachiningStory() {
           </div>
           <p className="relative z-10 font-mono text-xs uppercase tracking-[0.28em] text-coolant">Industrial Design Precision Machining</p>
           <h2 className="mt-6 font-display text-4xl font-semibold leading-tight text-mist md:text-6xl">
+            專注精密加工
+            <br />
             從圖面、公差到交付，每一步都能被檢驗
           </h2>
           <div className="mt-7 h-1 w-20 bg-chingBlue" />

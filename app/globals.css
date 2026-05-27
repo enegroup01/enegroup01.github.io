@@ -63,7 +63,11 @@ button {
 }
 
 .section-pad-siemens {
-  padding: clamp(2.5rem, 4.5vw, 4.5rem) clamp(1rem, 4vw, 5rem) clamp(5rem, 9vw, 9rem);
+  padding: clamp(2.5rem, 4.5vw, 4.5rem) clamp(1rem, 4vw, 5rem);
+}
+
+.section-pad-compact {
+  padding: clamp(2.5rem, 4.5vw, 4.5rem) clamp(1rem, 4vw, 5rem);
 }
 
 .section-kicker {
@@ -184,6 +188,23 @@ button {
 
 .product-scroll::-webkit-scrollbar-thumb {
   background: rgba(243, 107, 33, 0.62);
+}
+
+.siemens-scroll {
+  scrollbar-color: rgba(0, 143, 126, 0.55) rgba(0, 143, 126, 0.12);
+  scrollbar-width: thin;
+}
+
+.siemens-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.siemens-scroll::-webkit-scrollbar-track {
+  background: rgba(0, 143, 126, 0.12);
+}
+
+.siemens-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 143, 126, 0.62);
 }
 
 .product-image-stage::after {
