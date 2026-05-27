@@ -3,6 +3,7 @@
 import { navItems } from "@/lib/data";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useState } from "react";
 
 export function Header() {
@@ -17,13 +18,7 @@ export function Header() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <a href="#top" className="group flex items-center gap-3" onClick={() => setOpen(false)}>
-          <span className="grid h-9 w-9 place-items-center border border-chingBlue/25 bg-gradient-to-br from-chingBlue to-chingViolet font-mono text-xs text-white shadow-cold-glow">
-            CH
-          </span>
-          <span>
-            <span className="block text-sm font-semibold tracking-[0.22em] text-mist">慶鴻精密</span>
-            <span className="block font-mono text-[10px] uppercase tracking-[0.28em] text-steel">Precision Systems</span>
-          </span>
+          <Image src="/images/ching-hong-logo.png" alt="慶鴻精密" width={205} height={68} priority className="h-10 w-auto md:h-12" />
         </a>
 
         <nav className="hidden items-center gap-7 font-mono text-sm uppercase tracking-[0.14em] text-steel lg:flex">

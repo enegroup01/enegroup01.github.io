@@ -18,17 +18,28 @@ export function AboutContact() {
               透過專業授權、原廠產品知識與現場工程經驗，慶鴻精密能在導入前協助確認規格，在交付後支援操作、檢驗與流程優化。從單一量測儀器到跨部門工程資料流，我們以可信賴的技術合作夥伴角色參與每一次精準決策。
             </p>
           </div>
-          <div className="relative min-h-[520px] overflow-hidden border border-slate-900/10 bg-white shadow-[0_24px_90px_rgba(42,55,78,0.1)]" data-reveal>
-            <RadiantIndustrialShader variant="branching-tree" tone="ching" className="opacity-100 mix-blend-multiply" />
-            <div className="absolute inset-8 border border-slate-900/10" />
-            <div className="absolute inset-x-12 top-1/2 h-px bg-gradient-to-r from-transparent via-chingBlue/70 to-transparent" />
-            <div className="absolute bottom-10 left-10 right-10 grid gap-3 md:grid-cols-2">
+          <div className="relative overflow-hidden border border-slate-900/10 bg-[#2f3439] shadow-[0_24px_90px_rgba(42,55,78,0.16)]" data-reveal>
+            <div className="relative min-h-[430px] md:min-h-[520px]">
+              <RadiantIndustrialShader variant="laser-precision" tone="ching" className="opacity-100" />
+              <div className="absolute inset-5 border border-white/10 md:inset-8" />
+              <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent md:inset-x-12" />
+            </div>
+            <div className="grid gap-3 border-t border-white/10 bg-white/92 p-4 backdrop-blur md:absolute md:bottom-10 md:left-10 md:right-10 md:grid-cols-2 md:border-t-0 md:bg-transparent md:p-0 md:backdrop-blur-0">
               {capabilities.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <div key={item.title} className="metal-panel flex items-center gap-3 p-4">
-                    <Icon size={18} className="text-chingViolet" />
-                    <span className="text-sm text-ink">{item.title}</span>
+                  <div
+                    key={item.title}
+                    className="group relative overflow-hidden border border-slate-900/10 bg-white/86 p-4 shadow-[0_12px_34px_rgba(42,55,78,0.08)] transition duration-500 md:border-white/14 md:bg-slate-950/34 md:shadow-[0_18px_54px_rgba(0,0,0,0.2)] md:backdrop-blur-xl md:hover:border-chingBlue/55 md:hover:bg-slate-950/44"
+                  >
+                    <div className="absolute inset-x-0 top-0 hidden h-px bg-gradient-to-r from-transparent via-chingBlue/70 to-transparent md:block" />
+                    <div className="absolute inset-0 hidden bg-[linear-gradient(115deg,transparent,rgba(255,255,255,0.08),transparent)] opacity-0 transition duration-700 group-hover:translate-x-12 group-hover:opacity-100 md:block" />
+                    <div className="relative flex items-center gap-3">
+                      <span className="grid h-9 w-9 shrink-0 place-items-center border border-chingBlue/28 bg-chingBlue/8 text-chingViolet md:border-white/18 md:bg-white/8 md:text-white md:shadow-[0_0_26px_rgba(79,143,216,0.18)]">
+                        <Icon size={18} strokeWidth={1.5} />
+                      </span>
+                      <span className="text-sm font-medium text-ink md:text-white/90">{item.title}</span>
+                    </div>
                   </div>
                 );
               })}
@@ -45,7 +56,7 @@ export function AboutContact() {
               <p className="section-kicker text-chingBlue">Contact</p>
               <h2 className="mt-5 font-display text-4xl font-semibold text-ink md:text-6xl">讓下一個精密專案從規格對齊開始</h2>
               <p className="mt-6 max-w-2xl leading-8 text-steel">留下需求，我們可協助確認量測產品、加工可行性、Siemens 軟體導入或授權合作方式。</p>
-              <a href="mailto:service@ching-hong.com" className="scan-button mt-9 inline-flex items-center gap-3 px-7 py-4 font-mono text-xs uppercase tracking-[0.22em]">
+              <a href="mailto:jimmypan@chptw.com" className="scan-button mt-9 inline-flex items-center gap-3 px-7 py-4 font-mono text-xs uppercase tracking-[0.22em]">
                 聯絡技術顧問
                 <ArrowRight size={16} />
               </a>

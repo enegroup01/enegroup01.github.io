@@ -5,6 +5,7 @@ import {
   Cpu,
   DraftingCompass,
   Factory,
+  IdCard,
   Layers3,
   Mail,
   Microscope,
@@ -239,9 +240,11 @@ export const siemensProducts = [
 ];
 
 export const contactItems = [
-  { label: "Tel", value: "+886-2-0000-0000", icon: Phone },
-  { label: "Mobile", value: "+886-900-000-000", icon: Smartphone },
-  { label: "Email", value: "service@ching-hong.com", href: "mailto:service@ching-hong.com", icon: Mail }
+  { label: "統編", value: "94158496", icon: IdCard },
+  { label: "Mobile", value: "0933-006211", href: "tel:0933006211", icon: Smartphone },
+  { label: "Tel", value: "02-22256668", href: "tel:0222256668", icon: Phone },
+  { label: "Email", value: "jimmypan@chptw.com", href: "mailto:jimmypan@chptw.com", icon: Mail },
+  { label: "Contact", value: "Jimmy Pan", icon: Factory }
 ];
 
 export const capabilities = [

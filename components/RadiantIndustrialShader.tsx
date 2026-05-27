@@ -65,6 +65,9 @@ export function RadiantIndustrialShader({ variant, tone = "ching", className = "
     let running = false;
     let start = performance.now();
     let pointer = { x: 0, y: 0, active: false };
+    const burnCanvas = document.createElement("canvas");
+    const burnCtx = burnCanvas.getContext("2d");
+    let laserNeedsReset = true;
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
@@ -73,7 +76,13 @@ export function RadiantIndustrialShader({ variant, tone = "ching", className = "
       canvas.width = Math.floor(width * dpr);
       canvas.height = Math.floor(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (burnCtx) {
+        burnCanvas.width = Math.floor(width * dpr);
+        burnCanvas.height = Math.floor(height * dpr);
+        burnCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
       start = performance.now();
+      laserNeedsReset = true;
     };
 
     const clearPaper = (alpha = 0.78) => {
@@ -363,75 +372,380 @@ export function RadiantIndustrialShader({ variant, tone = "ching", className = "
         return { x: cx + Math.cos(a) * r * (i % 2 ? 0.65 : 1), y: cy + Math.sin(a) * r };
       });
 
-    const makeLaserShape = (time: number, cx: number, cy: number, r: number) => {
-      const shapeIndex = Math.abs(Math.floor(time / 5)) % 3;
-      if (shapeIndex === 0) return makeTriangle(cx, cy, r);
-      if (shapeIndex === 1) return makeHexagon(cx, cy, r);
-      return makeDiamond(cx, cy, r);
+    type Point = { x: number; y: number };
+    type LaserTrace = {
+      points: Point[];
+      segLengths: number[];
+      totalLength: number;
+      drawnLength: number;
+      speed: number;
+      done: boolean;
+      tip: Point;
+      prevTip: Point;
+    };
+    type LaserSpark = { x: number; y: number; vx: number; vy: number; life: number; maxLife: number; size: number; bright: boolean };
+    type LaserSmoke = { x: number; y: number; vx: number; vy: number; life: number; maxLife: number; size: number; grow: number; opacity: number };
+
+    const makeCircle = (cx: number, cy: number, r: number, segments: number) => Array.from({ length: segments + 1 }, (_, i) => {
+        const a = (i / segments) * Math.PI * 2 - Math.PI / 2;
+        return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r };
+      });
+    const makeStar = (cx: number, cy: number, outerR: number, innerR: number, points: number, rotation = 0) => Array.from({ length: points * 2 + 1 }, (_, i) => {
+        const a = (i / (points * 2)) * Math.PI * 2 + rotation - Math.PI / 2;
+        const r = i % 2 === 0 ? outerR : innerR;
+        return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r };
+      });
+    const makeSpiral = (cx: number, cy: number, maxR: number, turns: number, segments: number) => Array.from({ length: segments + 1 }, (_, i) => {
+        const t = i / segments;
+        const a = t * turns * Math.PI * 2 - Math.PI / 2;
+        const r = t * maxR;
+        return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r };
+      });
+    const makeLaserPolygon = (cx: number, cy: number, r: number, sides: number, rotation = 0) => Array.from({ length: sides + 1 }, (_, i) => {
+        const a = (i / sides) * Math.PI * 2 + rotation;
+        return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r };
+      });
+
+    let laserShapeIndex = 0;
+    let laserPhase: "drawing" | "holding" | "fading" = "drawing";
+    let laserPhaseTimer = 0;
+    let laserFadeAlpha = 1;
+    let laserLastTime = 0;
+    let laserTraces: LaserTrace[] = [];
+    let laserSparks: LaserSpark[] = [];
+    let laserSmoke: LaserSmoke[] = [];
+
+    const createLaserTrace = (points: Point[]): LaserTrace => {
+      const segLengths = points.slice(1).map((point, index) => Math.hypot(point.x - points[index].x, point.y - points[index].y));
+      const totalLength = segLengths.reduce((sum, length) => sum + length, 0);
+      return {
+        points,
+        segLengths,
+        totalLength,
+        drawnLength: 0,
+        speed: (180 + Math.random() * 120) * (mobile ? 0.8 : 1),
+        done: false,
+        tip: points[0],
+        prevTip: points[0]
+      };
+    };
+
+    const laserPosAt = (trace: LaserTrace, dist: number) => {
+      let walked = 0;
+      for (let i = 0; i < trace.segLengths.length; i += 1) {
+        const length = trace.segLengths[i];
+        if (walked + length >= dist) {
+          const t = length > 0 ? (dist - walked) / length : 0;
+          const p0 = trace.points[i];
+          const p1 = trace.points[i + 1];
+          return { x: p0.x + (p1.x - p0.x) * t, y: p0.y + (p1.y - p0.y) * t };
+        }
+        walked += length;
+      }
+      return trace.points[trace.points.length - 1];
+    };
+
+    const generateLaserShapeSet = () => {
+      const cx = width * (mobile ? 0.5 : 0.54);
+      const cy = height * (mobile ? 0.42 : 0.5);
+      const scale = Math.min(width, height) * (mobile ? 0.35 : 0.42);
+      const set: Point[][] = [];
+      switch (laserShapeIndex % 7) {
+        case 0:
+          set.push(makeLaserPolygon(cx, cy + scale * 0.2, scale * 0.82, 3, -Math.PI / 2));
+          set.push(makeCircle(cx, cy + scale * 0.2, scale * 0.42, 48));
+          set.push(makeLaserPolygon(cx, cy + scale * 0.2, scale * 0.35, 3, Math.PI / 2));
+          break;
+        case 1:
+          set.push(makeDiamond(cx, cy, scale * 0.78));
+          set.push(makeCircle(cx, cy, scale * 0.55, 48));
+          break;
+        case 2:
+          set.push(makeStar(cx, cy, scale * 0.82, scale * 0.34, 5));
+          set.push(makeLaserPolygon(cx, cy, scale * 0.52, 5, -Math.PI / 2));
+          set.push(makeCircle(cx, cy, scale * 0.26, 36));
+          break;
+        case 3:
+          set.push(makeLaserPolygon(cx, cy, scale * 0.82, 6, -Math.PI / 6));
+          set.push(makeLaserPolygon(cx, cy, scale * 0.5, 6));
+          set.push(makeCircle(cx, cy, scale * 0.68, 48));
+          break;
+        case 4:
+          set.push(makeCircle(cx, cy, scale * 0.78, 64));
+          set.push(makeStar(cx, cy, scale * 0.74, scale * 0.3, 8));
+          set.push(makeLaserPolygon(cx, cy, scale * 0.4, 4, Math.PI / 4));
+          break;
+        case 5:
+          set.push(makeSpiral(cx, cy, scale * 0.72, 3, 120));
+          set.push(makeCircle(cx, cy, scale * 0.78, 48));
+          break;
+        default:
+          set.push(makeLaserPolygon(cx, cy, scale * 0.82, 4, Math.PI / 4));
+          set.push(makeLaserPolygon(cx, cy, scale * 0.55, 4));
+          set.push(makeLaserPolygon(cx, cy, scale * 0.3, 4, Math.PI / 4));
+      }
+      laserShapeIndex += 1;
+      return set;
+    };
+
+    const startNewLaserShape = () => {
+      laserTraces = generateLaserShapeSet().map(createLaserTrace);
+      laserSparks = [];
+      laserSmoke = [];
+      laserPhase = "drawing";
+      laserPhaseTimer = 0;
+      laserFadeAlpha = 1;
+      laserNeedsReset = false;
+      burnCtx?.clearRect(0, 0, width, height);
+    };
+
+    const burnScorch = (x1: number, y1: number, x2: number, y2: number) => {
+      if (!burnCtx) return;
+      burnCtx.lineCap = "round";
+      burnCtx.beginPath();
+      burnCtx.moveTo(x1, y1);
+      burnCtx.lineTo(x2, y2);
+      burnCtx.strokeStyle = "rgba(12, 10, 8, 0.62)";
+      burnCtx.lineWidth = 5;
+      burnCtx.stroke();
+      burnCtx.beginPath();
+      burnCtx.moveTo(x1, y1);
+      burnCtx.lineTo(x2, y2);
+      burnCtx.strokeStyle = "rgba(48, 35, 26, 0.42)";
+      burnCtx.lineWidth = 3;
+      burnCtx.stroke();
+    };
+
+    const emitLaserSparks = (x: number, y: number, count: number) => {
+      for (let i = 0; i < count; i += 1) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 80 + Math.random() * 280;
+        const life = 0.2 + Math.random() * 0.8;
+        laserSparks.push({
+          x: x + (Math.random() - 0.5) * 4,
+          y: y + (Math.random() - 0.5) * 4,
+          vx: Math.cos(angle) * speed * (0.5 + Math.random() * 0.5),
+          vy: Math.sin(angle) * speed * (0.5 + Math.random() * 0.5),
+          life,
+          maxLife: life,
+          size: 0.5 + Math.random() * 2.5,
+          bright: Math.random() > 0.3
+        });
+      }
+    };
+
+    const emitLaserSmoke = (x: number, y: number, count: number) => {
+      for (let i = 0; i < count; i += 1) {
+        const life = 0.8 + Math.random() * 1.5;
+        laserSmoke.push({
+          x: x + (Math.random() - 0.5) * 8,
+          y: y + (Math.random() - 0.5) * 4,
+          vx: (Math.random() - 0.5) * 20,
+          vy: -(15 + Math.random() * 40),
+          life,
+          maxLife: life,
+          size: 4 + Math.random() * 12,
+          grow: 8 + Math.random() * 16,
+          opacity: 0.06 + Math.random() * 0.1
+        });
+      }
+    };
+
+    const updateLaserTrace = (trace: LaserTrace, dt: number) => {
+      if (trace.done) return;
+      trace.prevTip = trace.tip;
+      trace.drawnLength = Math.min(trace.totalLength, trace.drawnLength + trace.speed * dt);
+      trace.tip = laserPosAt(trace, trace.drawnLength);
+      burnScorch(trace.prevTip.x, trace.prevTip.y, trace.tip.x, trace.tip.y);
+      if (Math.random() < 0.85) emitLaserSparks(trace.tip.x, trace.tip.y, 2 + Math.floor(Math.random() * 4));
+      if (Math.random() < 0.6) emitLaserSmoke(trace.tip.x, trace.tip.y, 1 + Math.floor(Math.random() * 2));
+      if (trace.drawnLength >= trace.totalLength) {
+        trace.done = true;
+        emitLaserSparks(trace.tip.x, trace.tip.y, 24);
+        emitLaserSmoke(trace.tip.x, trace.tip.y, 8);
+      }
+    };
+
+    const drawLaserBeam = (trace: LaserTrace) => {
+      if (trace.drawnLength <= 0 || trace.done) return;
+      const hotZone = Math.min(120, trace.totalLength * 0.28);
+      const hotStart = Math.max(0, trace.drawnLength - hotZone);
+      let walked = 0;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      const layers = [
+        { color: "rgba(200, 60, 20,", alpha: 0.06, width: 40 },
+        { color: "rgba(220, 120, 40,", alpha: 0.12, width: 22 },
+        { color: "rgba(255, 160, 60,", alpha: 0.2, width: 12 },
+        { color: "rgba(255, 220, 160,", alpha: 0.4, width: 5 },
+        { color: "rgba(255, 250, 240,", alpha: 0.78, width: 1.2 }
+      ];
+      for (let i = 1; i < trace.points.length; i += 1) {
+        const p0 = trace.points[i - 1];
+        const p1 = trace.points[i];
+        const len = trace.segLengths[i - 1];
+        const segStart = walked;
+        const segEnd = walked + len;
+        walked = segEnd;
+        if (segEnd <= hotStart || segStart >= trace.drawnLength) continue;
+        const t0 = Math.max(0, (hotStart - segStart) / len);
+        const t1 = Math.min(1, (trace.drawnLength - segStart) / len);
+        if (t1 <= t0) continue;
+        const x0 = p0.x + (p1.x - p0.x) * t0;
+        const y0 = p0.y + (p1.y - p0.y) * t0;
+        const x1 = p0.x + (p1.x - p0.x) * t1;
+        const y1 = p0.y + (p1.y - p0.y) * t1;
+        const heat = Math.pow((segEnd - hotStart) / hotZone, 2);
+        layers.forEach((layer) => {
+          const alpha = layer.alpha * heat * laserFadeAlpha;
+          if (alpha < 0.002) return;
+          ctx.beginPath();
+          ctx.moveTo(x0, y0);
+          ctx.lineTo(x1, y1);
+          ctx.strokeStyle = `${layer.color} ${alpha.toFixed(4)})`;
+          ctx.lineWidth = layer.width;
+          ctx.stroke();
+        });
+      }
+    };
+
+    const drawLaserTip = (x: number, y: number) => {
+      const flicker = 0.86 + Math.random() * 0.14;
+      [
+        { r: 120, a: 0.12, c: "255, 100, 20" },
+        { r: 60, a: 0.3, c: "255, 160, 40" },
+        { r: 30, a: 0.55, c: "255, 220, 140" },
+        { r: 14, a: 0.92, c: "255, 255, 245" },
+        { r: 5, a: 1, c: "255, 255, 255" }
+      ].forEach((layer) => {
+        const grad = ctx.createRadialGradient(x, y, 0, x, y, layer.r);
+        grad.addColorStop(0, `rgba(${layer.c}, ${(layer.a * flicker * laserFadeAlpha).toFixed(4)})`);
+        grad.addColorStop(1, `rgba(${layer.c}, 0)`);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(x, y, layer.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
     };
 
     const drawLaser = (time: number) => {
-      clearPaper(0.54);
-      const cx = width * 0.58;
-      const cy = height * 0.48;
-      const r = Math.min(width, height) * (mobile ? 0.26 : 0.32);
-      const shape = makeLaserShape(time, cx, cy, r);
-      const perimeter = shape.reduce((sum, p, i) => {
-        if (i === 0) return sum;
-        const q = shape[i - 1];
-        return sum + Math.hypot(p.x - q.x, p.y - q.y);
-      }, 0);
-      const progress = reduced ? 1 : (time * 0.18) % 1;
-      let remaining = perimeter * progress;
+      if (!burnCtx) return;
+      if (laserNeedsReset || laserTraces.length === 0) startNewLaserShape();
+      const dt = laserLastTime ? Math.min(time - laserLastTime, 0.05) : 0.016;
+      laserLastTime = time;
 
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      ctx.strokeStyle = rgba(color.b, 0.34);
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      shape.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
-      ctx.stroke();
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "#3d3937";
+      ctx.fillRect(0, 0, width, height);
 
-      let tip = shape[0];
-      ctx.beginPath();
-      ctx.moveTo(shape[0].x, shape[0].y);
-      for (let i = 1; i < shape.length; i += 1) {
-        const p0 = shape[i - 1];
-        const p1 = shape[i];
-        const len = Math.hypot(p1.x - p0.x, p1.y - p0.y);
-        if (remaining >= len) {
-          ctx.lineTo(p1.x, p1.y);
-          tip = p1;
-          remaining -= len;
-        } else {
-          const t = Math.max(0, remaining / len);
-          tip = { x: p0.x + (p1.x - p0.x) * t, y: p0.y + (p1.y - p0.y) * t };
-          ctx.lineTo(tip.x, tip.y);
-          break;
+      for (let i = 0; i < 56; i += 1) {
+        if (Math.random() > 0.45) continue;
+        ctx.fillStyle = Math.random() > 0.5 ? "rgba(90,85,80,0.04)" : "rgba(25,23,21,0.04)";
+        ctx.fillRect(Math.random() * width, Math.random() * height, 3 + Math.random() * 12, 1);
+      }
+
+      if (laserPhase === "drawing") {
+        let allDone = true;
+        laserTraces.forEach((trace) => {
+          updateLaserTrace(trace, reduced ? dt * 0.15 : dt);
+          if (!trace.done) allDone = false;
+        });
+        if (allDone) {
+          laserPhase = "holding";
+          laserPhaseTimer = 0;
         }
+      } else if (laserPhase === "holding") {
+        laserPhaseTimer += dt;
+        if (laserPhaseTimer >= 1.15) {
+          laserPhase = "fading";
+          laserPhaseTimer = 0;
+        }
+      } else {
+        laserPhaseTimer += dt;
+        laserFadeAlpha = Math.max(0, 1 - laserPhaseTimer / 1.8);
+        if (laserPhaseTimer >= 1.8) startNewLaserShape();
       }
-      ctx.strokeStyle = rgba(color.a, 1);
-      ctx.lineWidth = 2.8;
-      ctx.shadowColor = rgba(color.a, 0.82);
-      ctx.shadowBlur = 24;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
 
-      const glow = ctx.createRadialGradient(tip.x, tip.y, 0, tip.x, tip.y, 70);
-      glow.addColorStop(0, rgba(color.hot, 0.95));
-      glow.addColorStop(0.18, rgba(color.a, 0.72));
-      glow.addColorStop(1, rgba(color.a, 0));
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(tip.x, tip.y, 70, 0, Math.PI * 2);
-      ctx.fill();
+      laserSparks = laserSparks.filter((spark) => {
+        spark.x += spark.vx * dt;
+        spark.y += spark.vy * dt;
+        spark.vx *= 0.96;
+        spark.vy = spark.vy * 0.96 + 180 * dt;
+        spark.life -= dt;
+        return spark.life > 0;
+      });
+      laserSmoke = laserSmoke.filter((smoke) => {
+        smoke.x += smoke.vx * dt;
+        smoke.y += smoke.vy * dt;
+        smoke.vx *= 0.98;
+        smoke.vy *= 0.985;
+        smoke.size += smoke.grow * dt;
+        smoke.life -= dt;
+        return smoke.life > 0;
+      });
 
-      for (let i = 0; i < 16; i += 1) {
-        const a = Math.random() * Math.PI * 2;
-        const d = Math.random() * 42;
-        ctx.fillStyle = rgba(color.b, 0.42 + Math.random() * 0.5);
-        ctx.fillRect(tip.x + Math.cos(a) * d, tip.y + Math.sin(a) * d, 1.4, 1.4);
-      }
+      ctx.save();
+      ctx.globalAlpha = laserFadeAlpha;
+      ctx.shadowOffsetX = -2;
+      ctx.shadowOffsetY = -2;
+      ctx.shadowBlur = 3;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
+      ctx.drawImage(burnCanvas, 0, 0, width, height);
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = laserFadeAlpha * 0.5;
+      ctx.shadowOffsetX = 2.5;
+      ctx.shadowOffsetY = 2.5;
+      ctx.shadowBlur = 2;
+      ctx.shadowColor = "rgba(255, 255, 250, 0.45)";
+      ctx.drawImage(burnCanvas, 0, 0, width, height);
+      ctx.restore();
+
+      laserSmoke.forEach((smoke) => {
+        const life = smoke.life / smoke.maxLife;
+        const alpha = Math.min(1, (1 - life) * 5) * life * smoke.opacity * laserFadeAlpha;
+        if (alpha < 0.002) return;
+        const grad = ctx.createRadialGradient(smoke.x, smoke.y, 0, smoke.x, smoke.y, smoke.size);
+        grad.addColorStop(0, `rgba(140, 92, 62, ${(alpha * 0.8).toFixed(4)})`);
+        grad.addColorStop(1, "rgba(90, 68, 54, 0)");
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(smoke.x, smoke.y, smoke.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      laserTraces.forEach((trace) => {
+        drawLaserBeam(trace);
+        if (laserPhase === "drawing" && !trace.done) drawLaserTip(trace.tip.x, trace.tip.y);
+      });
+
+      laserSparks.forEach((spark) => {
+        const life = spark.life / spark.maxLife;
+        const alpha = life * laserFadeAlpha;
+        const trailLength = Math.hypot(spark.vx, spark.vy) * 0.015;
+        if (trailLength > 1) {
+          ctx.beginPath();
+          ctx.moveTo(spark.x, spark.y);
+          ctx.lineTo(spark.x - spark.vx * 0.015, spark.y - spark.vy * 0.015);
+          ctx.strokeStyle = spark.bright ? `rgba(255,255,255,${(alpha * 0.6).toFixed(4)})` : `rgba(255,180,60,${(alpha * 0.5).toFixed(4)})`;
+          ctx.lineWidth = spark.size;
+          ctx.lineCap = "round";
+          ctx.stroke();
+        }
+        ctx.fillStyle = spark.bright ? `rgba(255,255,255,${(alpha * 0.95).toFixed(4)})` : `rgba(255,200,80,${(alpha * 0.9).toFixed(4)})`;
+        ctx.beginPath();
+        ctx.arc(spark.x, spark.y, spark.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      const cx = width * (mobile ? 0.5 : 0.54);
+      const cy = height * (mobile ? 0.42 : 0.5);
+      const vignette = ctx.createRadialGradient(cx, cy, Math.max(width, height) * 0.15, cx, cy, Math.max(width, height) * 0.72);
+      vignette.addColorStop(0, "rgba(0,0,0,0)");
+      vignette.addColorStop(0.5, "rgba(0,0,0,0.1)");
+      vignette.addColorStop(1, "rgba(0,0,0,0.45)");
+      ctx.fillStyle = vignette;
+      ctx.fillRect(0, 0, width, height);
     };
 
     const draw = (now: number) => {
