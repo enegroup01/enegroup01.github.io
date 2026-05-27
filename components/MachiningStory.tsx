@@ -1,13 +1,20 @@
 "use client";
 
-import { SectionHeader } from "@/components/SectionHeader";
 import { RadiantIndustrialShader } from "@/components/RadiantIndustrialShader";
 import { machiningSteps } from "@/lib/data";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const processImages = [
+  "/images/process-01-design.png",
+  "/images/process-02-machining.png",
+  "/images/process-03-measurement.png",
+  "/images/process-04-delivery.png"
+];
 
 export function MachiningStory() {
   const ref = useRef<HTMLElement | null>(null);
@@ -16,59 +23,82 @@ export function MachiningStory() {
     if (!ref.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        ".process-line",
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: "none",
-          scrollTrigger: { trigger: ".process-wrap", start: "top 65%", end: "bottom 35%", scrub: true }
-        }
+        ".machining-copy",
+        { autoAlpha: 0, y: 28 },
+        { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: ref.current, start: "top 72%" } }
       );
-      gsap.utils.toArray<HTMLElement>(".process-step").forEach((step) => {
-        gsap.fromTo(step, { autoAlpha: 0.2, x: -34 }, { autoAlpha: 1, x: 0, scrollTrigger: { trigger: step, start: "top 70%", end: "bottom 55%", scrub: true } });
+      gsap.utils.toArray<HTMLElement>(".machining-card").forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          { autoAlpha: 0, y: 36 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.75,
+            delay: index * 0.08,
+            ease: "power3.out",
+            scrollTrigger: { trigger: ".process-wrap", start: "top 72%" }
+          }
+        );
       });
     }, ref);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="machining" ref={ref} className="section-pad relative overflow-hidden bg-white">
-      <div className="absolute inset-0 bg-precision-grid bg-[size:72px_72px] opacity-70" />
+    <section id="machining" ref={ref} className="section-pad relative scroll-mt-24 overflow-hidden bg-[#f5f8fc] text-mist">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_100%,rgba(79,143,216,0.18),transparent_32rem),linear-gradient(180deg,#ffffff_0%,#eef4fa_100%)]" />
+      <div className="absolute inset-0 bg-precision-grid bg-[size:86px_86px] opacity-70" />
+      <div className="absolute right-0 top-0 h-[400px] w-full opacity-35 md:h-[500px] lg:w-[58%]">
+        <Image src="/images/precision-machining-hero.png" alt="CNC precision machining inspection" fill className="object-cover object-right-top" sizes="(min-width: 1024px) 64vw, 100vw" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#f5f8fc] via-[#f5f8fc]/62 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#f5f8fc] via-[#f5f8fc]/70 to-transparent" />
+      </div>
+      <div className="absolute right-8 top-28 hidden h-72 w-72 overflow-hidden opacity-35 mix-blend-multiply lg:block">
+        <RadiantIndustrialShader variant="clockwork-mind" tone="ching" className="opacity-100" />
+      </div>
+
       <div className="relative mx-auto max-w-7xl">
-        <SectionHeader
-          eyebrow="Industrial Design Precision Machining"
-          title="從圖面、公差到交付，每一步都能被檢驗"
-          text="整合工業設計、精密零件加工、CNC 金屬切削、客製化製造與品質檢驗，讓設計圖面、加工公差與交付結果形成可驗證的工程流程。"
-        />
-        <div className="process-wrap mt-12 grid gap-8 lg:grid-cols-[0.78fr_1fr]">
-          <div className="sticky top-28 hidden h-[500px] overflow-hidden border border-slate-900/10 bg-white/70 shadow-[0_24px_90px_rgba(42,55,78,0.1)] backdrop-blur lg:block">
-            <RadiantIndustrialShader variant="clockwork-mind" tone="ching" className="opacity-100" />
-            <div className="absolute inset-10 border border-dashed border-coolant/25" />
-            <div className="absolute left-16 top-16 h-56 w-56 rounded-full border border-chingBlue/25" />
-            <div className="absolute bottom-20 right-16 h-44 w-72 border border-mitutoyo/35" />
-            <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-coolant/80 to-transparent" />
-            <div className="absolute inset-y-0 left-1/2 w-px bg-gradient-to-b from-transparent via-mitutoyo/60 to-transparent" />
-          </div>
-          <div className="relative space-y-6 pl-8">
-            <div className="process-line absolute left-3 top-0 h-full w-px origin-top bg-gradient-to-b from-chingViolet via-coolant to-mitutoyo" />
-            {machiningSteps.map((step, index) => {
-              const Icon = step.icon;
-              return (
-                <article key={step.title} className="process-step border border-slate-900/10 bg-white/82 p-5 shadow-[0_18px_60px_rgba(42,55,78,0.08)] backdrop-blur md:p-6">
-                  <div className="flex items-start gap-5">
-                    <span className="grid h-12 w-12 shrink-0 place-items-center border border-chingBlue/25 bg-chingBlue/5 text-coolant">
-                      <Icon size={24} strokeWidth={1.25} />
+        <div className="machining-copy max-w-4xl pt-10 md:pt-14">
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-coolant">Industrial Design Precision Machining</p>
+          <h2 className="mt-6 font-display text-4xl font-semibold leading-tight text-mist md:text-6xl">
+            從圖面、公差到交付，每一步都能被檢驗
+          </h2>
+          <div className="mt-7 h-1 w-20 bg-chingBlue" />
+          <p className="mt-7 max-w-3xl text-lg leading-9 text-steel">
+            整合工業設計、精密零件加工、CNC 金屬切削、客製化製造與品質檢驗，讓設計圖面、加工公差與交付結果形成可驗證的工程流程。
+          </p>
+        </div>
+
+        <div className="process-wrap mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {machiningSteps.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <article key={step.title} className="machining-card group relative overflow-hidden border border-slate-900/10 bg-white shadow-[0_24px_80px_rgba(42,55,78,0.11)] transition duration-500 hover:-translate-y-1 hover:border-chingBlue/45 hover:shadow-[0_30px_92px_rgba(79,143,216,0.16)]">
+                <div className="relative h-44 overflow-hidden bg-[#101820]">
+                  <Image src={processImages[index]} alt={`${step.title} process`} fill className="object-cover transition duration-700 group-hover:scale-105" sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/48 via-transparent to-transparent" />
+                  <p className="absolute left-5 top-5 font-mono text-xs uppercase tracking-[0.24em] text-coolant">
+                    PROCESS <span className="text-white">0{index + 1}</span>
+                  </p>
+                </div>
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-chingBlue to-transparent" />
+                <div className="relative">
+                  <div className="-mt-9 grid place-items-center">
+                    <span className="grid h-[72px] w-[72px] place-items-center rounded-full border border-chingBlue/45 bg-white text-mist shadow-[0_0_0_6px_rgba(79,143,216,0.08),0_18px_42px_rgba(42,55,78,0.14)] transition duration-500 group-hover:text-chingBlue">
+                      <Icon size={34} strokeWidth={1.2} />
                     </span>
-                    <div>
-                      <p className="font-mono text-xs tracking-[0.24em] text-steel">PROCESS 0{index + 1}</p>
-                      <h3 className="mt-2 text-2xl font-semibold text-mist">{step.title}</h3>
-                      <p className="mt-3 max-w-xl leading-7 text-steel">{step.text}</p>
-                    </div>
                   </div>
-                </article>
-              );
-            })}
-          </div>
+                  <h3 className="mt-6 text-center font-display text-4xl font-semibold text-mist">{step.title}</h3>
+                  <div className="mx-auto mt-5 h-px w-12 bg-chingBlue transition-all duration-500 group-hover:w-24" />
+                  <p className="mx-auto mt-6 max-w-[16rem] px-6 pb-8 text-center leading-8 text-steel">{step.text}</p>
+                </div>
+                {index < machiningSteps.length - 1 ? (
+                  <span className="absolute -right-5 top-1/2 z-10 hidden -translate-y-1/2 font-display text-5xl text-chingBlue/75 lg:block">›</span>
+                ) : null}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
