@@ -1,6 +1,5 @@
 "use client";
 
-import { SectionHeader } from "@/components/SectionHeader";
 import { mitutoyoProducts } from "@/lib/data";
 import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
 import Image from "next/image";
@@ -36,11 +35,15 @@ export function ProductGrid() {
     <section id="mitutoyo" className="section-pad-product bg-carbon">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <SectionHeader
-            eyebrow="Mitutoyo Product Matrix"
-            title="Mitutoyo 量測產品"
-            text="原廠授權量測產品矩陣，涵蓋測微器、卡尺、量錶、高度計與內徑量測等現場核心檢驗工具。"
-          />
+          <div className="max-w-3xl" data-reveal>
+            <p className="section-kicker">Mitutoyo Product Matrix</p>
+            <h2 className="mt-4 font-display text-4xl font-semibold leading-tight text-mist md:text-6xl">
+              <span className="text-mitutoyo">Mitutoyo</span> 量測產品
+            </h2>
+            <p className="mt-5 text-base leading-8 text-steel md:text-lg">
+              原廠授權量測產品矩陣，涵蓋測微器、卡尺、量錶、高度計與內徑量測等現場核心檢驗工具。
+            </p>
+          </div>
           <div className="inline-flex w-fit items-center gap-3 border border-mitutoyo/35 bg-white px-5 py-3 font-mono text-xs uppercase tracking-[0.22em] text-mitutoyo shadow-orange-glow" data-reveal>
             Authorized Product
             <span className="h-2 w-12 bg-mitutoyo" />

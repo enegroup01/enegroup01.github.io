@@ -18,7 +18,7 @@ export function Header() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <a href="#top" className="group flex items-center gap-3" onClick={() => setOpen(false)}>
-          <Image src="/images/ching-hong-logo.png" alt="慶鴻精密" width={205} height={68} priority className="h-10 w-auto md:h-12" />
+          <Image src="/images/ching-hong-logo.png" alt="慶鴻精密" width={260} height={86} priority className="h-12 w-auto md:h-14" />
         </a>
 
         <nav className="hidden items-center gap-7 font-mono text-sm uppercase tracking-[0.14em] text-steel lg:flex">

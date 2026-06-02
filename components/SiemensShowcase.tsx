@@ -1,6 +1,5 @@
 "use client";
 
-import { SectionHeader } from "@/components/SectionHeader";
 import { siemensProducts } from "@/lib/data";
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, ChevronLeft, ChevronRight, Layers3, Maximize2, X } from "lucide-react";
@@ -38,11 +37,15 @@ export function SiemensShowcase() {
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,251,250,0.98),rgba(244,251,250,0.9),rgba(244,251,250,0.7))]" />
       <div className="absolute inset-0 bg-precision-grid bg-[size:80px_80px] opacity-50" />
       <div className="relative mx-auto max-w-7xl">
-        <SectionHeader
-          eyebrow="Siemens / Engineering Software"
-          title="Siemens 工程軟體方案"
-          text="整合 CAD 設計、電子散熱模擬、有限元素分析與 CAM 製造流程，讓工程資料從設計驗證一路銜接到加工現場。"
-        />
+        <div className="max-w-3xl" data-reveal>
+          <p className="section-kicker">Siemens / Engineering Software</p>
+          <h2 className="mt-4 font-display text-4xl font-semibold leading-tight text-mist md:text-6xl">
+            <span className="text-siemens">Siemens</span> 工程軟體方案
+          </h2>
+          <p className="mt-5 text-base leading-8 text-steel md:text-lg">
+            整合 CAD 設計、電子散熱模擬、有限元素分析與 CAM 製造流程，讓工程資料從設計驗證一路銜接到加工現場。
+          </p>
+        </div>
 
         <div className="mt-10 flex items-center justify-between md:hidden" aria-hidden="true">
           <div className="flex items-center gap-2 text-siemens">
