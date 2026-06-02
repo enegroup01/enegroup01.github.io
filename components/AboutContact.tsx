@@ -2,6 +2,7 @@ import { RadiantIndustrialShader } from "@/components/RadiantIndustrialShader";
 import { SectionHeader } from "@/components/SectionHeader";
 import { capabilities, contactItems, navItems } from "@/lib/data";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 export function AboutContact() {
   return (
@@ -14,20 +15,29 @@ export function AboutContact() {
               title="慶鴻精密是工業客戶的量測、加工與軟體整合夥伴"
               text="我們以 Mitutoyo 精密量測與授權代理產品為核心，延伸至精密加工、工業應用服務與 Siemens 工程軟體銷售整合，協助客戶把尺寸品質、製程資料與數位設計流程連成可追溯的系統。"
             />
-            <div className="mt-8 grid gap-4" data-reveal>
-              <div className="group relative overflow-hidden border border-slate-900/10 bg-white/72 p-5 shadow-[0_18px_52px_rgba(42,55,78,0.07)]">
-                <div className="absolute inset-y-4 left-0 w-1 bg-mitutoyo" />
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-mitutoyo">Mitutoyo / Measurement Standard</p>
-                <p className="mt-3 leading-8 text-steel">
-                  從量測儀器選型、規格確認到現場使用情境，慶鴻精密以原廠產品知識與代理服務經驗，協助客戶建立穩定、可重複驗證的尺寸品質基準。
-                </p>
-              </div>
-              <div className="group relative overflow-hidden border border-slate-900/10 bg-white/72 p-5 shadow-[0_18px_52px_rgba(42,55,78,0.07)]">
-                <div className="absolute inset-y-4 left-0 w-1 bg-gradient-to-b from-chingBlue to-chingViolet" />
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-chingBlue">Process / Data / Software Integration</p>
-                <p className="mt-3 leading-8 text-steel">
-                  透過精密加工、檢驗流程與 Siemens 工程軟體整合，我們把單一量測儀器延伸成跨部門工程資料流，讓導入、操作、檢驗與製程優化都能被清楚追蹤。
-                </p>
+            <div className="mt-8" data-reveal>
+              <div className="relative overflow-hidden border border-slate-900/10 bg-white/88 p-4 shadow-[0_24px_80px_rgba(42,55,78,0.1)] backdrop-blur md:p-5">
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-mitutoyo via-chingBlue to-chingViolet" />
+                <div className="relative z-10">
+                  <p className="whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.2em] text-mitutoyo sm:text-[11px] sm:tracking-[0.24em]">
+                    Authorized Distributor Certificate
+                  </p>
+                  <h3 className="mt-3 whitespace-nowrap text-2xl font-semibold leading-snug text-mist md:text-3xl">建大貿易授權經銷商</h3>
+                </div>
+
+                <div className="relative mt-5 overflow-hidden border border-slate-900/10 bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,1),rgba(239,244,250,0.92)_58%,rgba(210,221,234,0.7))] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.95)] md:p-2">
+                  <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(42,55,78,0.045)_1px,transparent_1px),linear-gradient(180deg,rgba(42,55,78,0.035)_1px,transparent_1px)] bg-[size:34px_34px] opacity-55" />
+                  <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-chingBlue/45 to-transparent" />
+                  <div className="relative h-[210px] sm:h-[240px] md:h-[260px]">
+                    <Image
+                      src="/images/jain-dah-authorization-certificate.png"
+                      alt="建大貿易授權書"
+                      fill
+                      className="scale-[1.1] object-contain drop-shadow-[0_22px_36px_rgba(42,55,78,0.18)]"
+                      sizes="(min-width: 1024px) 44vw, 92vw"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
