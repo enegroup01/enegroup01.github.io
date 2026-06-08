@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export function useLenis() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 0.82,
+      duration: 0.58,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true
     });

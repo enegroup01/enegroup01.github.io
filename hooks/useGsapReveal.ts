@@ -14,14 +14,14 @@ export function useGsapReveal(scope: RefObject<HTMLElement>) {
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
         gsap.fromTo(
           el,
-          { autoAlpha: 0, y: 34, filter: "blur(10px)" },
+          { autoAlpha: 0, y: 24 },
           {
             autoAlpha: 1,
             y: 0,
-            filter: "blur(0px)",
-            duration: 0.9,
+            duration: 0.62,
             ease: "power3.out",
-            scrollTrigger: { trigger: el, start: "top 82%" }
+            force3D: true,
+            scrollTrigger: { trigger: el, start: "top 88%", once: true }
           }
         );
       });
@@ -33,10 +33,11 @@ export function useGsapReveal(scope: RefObject<HTMLElement>) {
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.75,
-            stagger: 0.08,
+            duration: 0.58,
+            stagger: 0.06,
             ease: "power3.out",
-            scrollTrigger: { trigger: group, start: "top 78%" }
+            force3D: true,
+            scrollTrigger: { trigger: group, start: "top 86%", once: true }
           }
         );
       });
