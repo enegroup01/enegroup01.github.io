@@ -1,7 +1,7 @@
 import { RadiantIndustrialShader } from "@/components/RadiantIndustrialShader";
 import { SectionHeader } from "@/components/SectionHeader";
 import { capabilities, contactItems, navItems } from "@/lib/data";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import Image from "next/image";
 
 export function AboutContact() {
@@ -104,19 +104,37 @@ export function AboutContact() {
       </section>
 
       <footer className="border-t border-slate-900/10 bg-white px-4 py-10 md:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="font-semibold tracking-[0.22em] text-ink">慶鴻精密有限公司</p>
-            <p className="mt-2 font-mono text-xs uppercase tracking-[0.22em] text-steel">Precision Instruments / Machining / Engineering Software</p>
+        <div className="mx-auto max-w-[90rem]">
+          <div className="flex flex-col gap-8 xl:grid xl:grid-cols-[auto_1fr_auto] xl:grid-rows-[auto_auto] xl:gap-x-6 xl:gap-y-2">
+            <div className="xl:contents">
+              <p className="font-semibold tracking-[0.22em] text-ink xl:col-start-1 xl:row-start-1">慶鴻精密有限公司</p>
+              <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-steel xl:col-start-1 xl:row-start-2 xl:mt-0 xl:whitespace-nowrap">
+                Precision Instruments / Machining / Engineering Software
+              </p>
+            </div>
+            <nav className="flex flex-wrap gap-5 font-mono text-xs uppercase tracking-[0.18em] text-steel xl:col-start-2 xl:row-start-2 xl:self-center xl:justify-self-center xl:flex-nowrap xl:whitespace-nowrap">
+              {navItems.map((item) => (
+                <a key={item.href} href={item.href} className="hover:text-ink">
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+            <p className="font-mono text-xs text-steel xl:col-start-3 xl:row-start-2 xl:self-center xl:justify-self-end xl:whitespace-nowrap">
+              Copyright © 2026 Ching Hong Precision Co., Ltd.
+            </p>
           </div>
-          <nav className="flex flex-wrap gap-5 font-mono text-xs uppercase tracking-[0.18em] text-steel">
-            {navItems.map((item) => (
-              <a key={item.href} href={item.href} className="hover:text-ink">
-                {item.label}
-              </a>
-            ))}
-          </nav>
-          <p className="font-mono text-xs text-steel">Copyright © 2026 Ching Hong Precision Co., Ltd.</p>
+
+          <div className="mt-7 flex justify-center">
+            <a
+              href="https://aiwisdomcompany.github.io/"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.18em] text-[#087c72] transition hover:text-[#065f58] xl:whitespace-nowrap"
+            >
+              網站製作：知日彗心科技有限公司
+              <ExternalLink size={12} strokeWidth={1.7} />
+            </a>
+          </div>
         </div>
       </footer>
     </>
